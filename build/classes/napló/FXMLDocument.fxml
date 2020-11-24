@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="napló.FXMLDocumentController">
+    <children>
+      <Pane id="StartPane" fx:id="StartPane" layoutY="53.0" visible="false">
+         <children>
+            <Button id="StartLogButton" fx:id="StartLogButton" layoutX="48.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleStartLogButton" text="Bejelentkezés" />
+            <Button id="StartRegButton" fx:id="StartRegButton" layoutX="187.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleStartRegButton" text="Felhasználó készítés" />
+            <Label layoutX="48.0" layoutY="67.0" prefHeight="17.0" prefWidth="266.0" text="A napló használatához elősször Készíteni kell egy" />
+            <Label layoutX="48.0" layoutY="84.0" prefHeight="17.0" prefWidth="279.0" text="felhasználót, ha elkészült, akkor lehet bejelentkezni." />
+         </children>
+      </Pane>
+      <Pane id="regPane" fx:id="regPane" layoutY="53.0" visible="false">
+         <children>
+            <Label layoutX="40.0" layoutY="15.0" text="Regisztráció">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField id="regNameTF" fx:id="regNameTF" layoutX="140.0" layoutY="82.0" />
+            <TextField id="regPasswordTF" fx:id="regPasswordTF" layoutX="140.0" layoutY="122.0" />
+            <TextField id="regPasswordInspectionTF" fx:id="regPasswordInspectionTF" layoutX="140.0" layoutY="162.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="85.0" text="Felhasználó név:" />
+            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="125.0" prefHeight="17.0" prefWidth="86.0" text="Jelszó:" />
+            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="165.0" prefHeight="17.0" prefWidth="86.0" text="Jelszó újra:" />
+            <Button id="regRegButton" fx:id="regRegButton" layoutX="114.0" layoutY="202.0" mnemonicParsing="false" onAction="#handleRegPaneRegButton" text="Regisztráció" />
+            <Button id="regCancelButton" fx:id="regCancelButton" layoutX="237.0" layoutY="202.0" mnemonicParsing="false" onAction="#handleRegPaneCancelButton" text="Mégse" />
+         </children>
+      </Pane>
+      <Pane id="logPane" fx:id="logPane" layoutY="54.0" visible="false">
+         <children>
+            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="116.0" prefHeight="17.0" prefWidth="86.0" text="Jelszó:" />
+            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="75.0" text="Felhasználó név:" />
+            <TextField id="logPasswordTF" fx:id="logPasswordTF" layoutX="140.0" layoutY="113.0" />
+            <TextField id="logNameTF" fx:id="logNameTF" layoutX="140.0" layoutY="72.0" />
+            <Button id="logEntryButton" fx:id="logEntryButton" layoutX="110.0" layoutY="166.0" mnemonicParsing="false" onAction="#handleLogEntryButton" text="Belépés" />
+            <Button id="logCancelButton" fx:id="logCancelButton" layoutX="220.0" layoutY="166.0" mnemonicParsing="false" onAction="#handleLogCancelButton" text="Mégse" />
+            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="15.0" text="Belépés" />
+         </children>
+      </Pane>
+      <BorderPane id="mainPane" fx:id="mainPane" layoutY="-1.0" style="-fx-background-color: E2EEF0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <MenuBar id="mainPaneMenuBar" fx:id="mainPaneMenuBar" style="-fx-background-color: E2EEF0;" BorderPane.alignment="CENTER">
+              <menus> 
+                <Menu mnemonicParsing="false" text="Háttérszín">
+                  <items>
+                    <MenuItem id="mainColorLightPink" fx:id="mainColorLightPink" mnemonicParsing="false" onAction="#handleMainColorLightPinkMenuButton" style="-fx-background-color: F9D5F2;" text="Világos rózsaszín" />
+                    <MenuItem id="mainColorLightGreen" fx:id="mainColorLightGreen" mnemonicParsing="false" onAction="#handleMainColorLightGreenMenuButton" text="Világos zöld" />
+                    <MenuItem id="mainColorLightRed" fx:id="mainColorLightRed" mnemonicParsing="false" onAction="#handleMainColorLightRedMenuButton" text="Világos piros" />
+                    <MenuItem id="mainColorPink" fx:id="mainColorPink" mnemonicParsing="false" onAction="#handleMainColorPinkMenuButton" text="Rózsaszín" />
+                    <MenuItem id="mainColorGreen" fx:id="mainColorGreen" mnemonicParsing="false" onAction="#handleMainColorGreenMenuButton" text="Zöld" />
+                    <MenuItem id="mainColorRed" fx:id="mainColorRed" mnemonicParsing="false" onAction="#handleMainColorRedMenuButton" text="Piros" />
+                    <MenuItem id="mainColorDefault" fx:id="mainColorDefault" mnemonicParsing="false" onAction="#handleMainColorDefaultMenuButton" text="Visszaállítás" />
+                  </items>
+                </Menu>
+                <Menu id="mainHelp" fx:id="mainHelp" mnemonicParsing="false" text="Segítség">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets left="23.0" />
+               </padding>
+            </MenuBar>
+         </top>
+         <center>
+            <TextArea id="mainTextArea" fx:id="mainTextArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="30.0" right="30.0" top="5.0" />
+               </BorderPane.margin>
+            </TextArea>
+         </center>
+         <left>
+            <ListView id="mainListView" fx:id="mainListView" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="5.0" />
+               </BorderPane.margin>
+            </ListView>
+         </left>
+         <bottom>
+            <SplitPane dividerPositions="0.5569620253164557" style="-fx-background-color: E2EEF0;" BorderPane.alignment="CENTER">
+               <items>
+                  <Button id="MainBackButton" fx:id="MainBackButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#handleMainBackButton" text="Kijelentkezés" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Button" />
+               </items>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </SplitPane>
+         </bottom>
+      </BorderPane>
+    </children>
+</AnchorPane>
