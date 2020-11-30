@@ -26,7 +26,6 @@ Program specifikáció:
     Ha sikeres a belépés, lehessen létrehozni naplóbejegyzéseket.
     A bejegyzéseknek kötelező legyen nevet adni, de nem szükséges szöveget tárolni benne.
     A bejegyzéseket ellehessen menteni.
-    A program tárolja el a szöveget, dátummal és címmel együtt.
     A bejegyzés jelenjen meg a felhasználónak címmel és dátummal együtt, meglehessen nyitni, módosítani, és ki is lehessen törölni.
     A felhasználói felületet szín szerint lehessen változtatni.
     Az esetleges hibákat popup ablakban jelenjenek meg.

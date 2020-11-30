@@ -3,40 +3,62 @@ Programnyelv: JAVA, JAVAFXML.
 
 Felhasználói felület:
 
-    Az ablak tetején egy napló felirat található.
-    A felhasználói felületen legelősször kettő gomb jelenjen meg, bejelentkezés és felhasználó készítés.
-    Regtisztrálásnál 3 textfield legyen, egy a névnek, egy a jelszónak,és egy a jelszó ellenörzésének.
-    regisztrálásnál legyen 2 gomb is, egy regisztrálás megerősítése, és egy mégse. A mégse gombal ugorjon vissza a legelejére.
-    A regisztrálás megerősítésénél mentődjön el a felhasználónév, és a jelszó.
-    2 ugyanolyan felhasználónevet ne lehessem megadni.
-    A belépésnél 2 textfield és kettő gomb jelenjen meg. A textfieldekkel a felhasználó nevet és a jelszót lehessen megadni, 
-    a gombokal pedig a belépést, vagy a visszát lehessen választani, csak akkor lépjen be, ha a megadott felhasználó és a jelszó 
-    már szerepel az adatbázisban. Belépést követően egy listában jelenjenek meg az eddig elmentett címek dátummal 
-    (a cím bal oldalt, mellette jobbra a dátum), ha vannak.
+    Az ablak tetején egy napló felirat található. +
+
+    A felhasználói felületen legelősször kettő gomb jelenjen meg, bejelentkezés és felhasználó készítés. +
+
+    Regtisztrálásnál 3 textfield legyen, egy a névnek, egy a jelszónak,és egy a jelszó ellenörzésének. +
+
+    regisztrálásnál legyen 2 gomb is, egy regisztrálás megerősítése, és egy mégse. A mégse gombal ugorjon vissza a legelejére. +
+
+    A regisztrálás megerősítésénél mentődjön el a felhasználónév, és a jelszó. +
+
+    2 ugyanolyan felhasználónevet ne lehessem megadni.  !!!!!!!!
+
+    A belépésnél 2 textfield és kettő gomb jelenjen meg. +
+
+    A textfieldekkel a felhasználó nevet és a jelszót lehessen megadni, a gombokal pedig a belépést, 
+    vagy a visszát lehessen választani, csak akkor lépjen be, ha a megadott felhasználó és a jelszó már szerepel az adatbázisban. +
+
+    Belépést követően egy listában jelenjenek meg az eddig elmentett címek dátummal 
+    (a cím bal oldalt, mellette jobbra a dátum), ha vannak. !!!!!!!
+
     A felületen legyen egy kilépés gomb (bal allul), és egy beállítás gomb (bal fellül), amire rákíttintva leugrik egy csúszka, 
-    amin rajtavannak azok a színek, amiket belehet állítani háttérnek (a beállítás gomb alatt).
-    Legyen egy szöveges felület, ami mutatja a bejegyzés szövegét (jobb oldalt), ha nem fér a képernyőre a szöveg, akkor jelenjen meg egy csúszka, 
-    amivel lejjeb lehet tekerni, és tovább olvasni a szöveget. Legyen egy törlés gomb is (a lista alatt de a kikapcs gomb felett), 
-    amivel kilehet törölni a napló bejegyzést, ha rávan kattintva a listában, ezt egy popup ablakkal megkell erősíteni.
+    amin rajtavannak azok a színek, amiket belehet állítani háttérnek (a beállítás gomb alatt). +
+
+    Legyen egy szöveges felület, ami mutatja a bejegyzés szövegét (jobb oldalt), ha nem fér a képernyőre a szöveg, akkor jelenjen 
+    meg egy csúszka, amivel lejjeb lehet tekerni, és tovább olvasni a szöveget. !!!!!!!!!
+
+    Legyen egy törlés gomb is (a lista alatt de a kikapcs gomb felett), amivel kilehet törölni a napló bejegyzést, 
+    ha rávan kattintva a listában, ezt egy popup ablakkal megkell erősíteni. !!!!!!!!
 
 Program specifikáció:
 
     A program tárolja el a szöveget, dátummal és címmel együtt.
+
     A felhasználói felületen lehessen létrehozni fiókot, névvel és jelszóval.
+
     Ha sikeres a belépés, lehessen létrehozni naplóbejegyzéseket.
+
     A bejegyzéseknek kötelező legyen nevet adni, de nem szükséges szöveget tárolni benne.
+
     A bejegyzéseket ellehessen menteni.
-    A program tárolja el a szöveget, dátummal és címmel együtt.
+
     A bejegyzés jelenjen meg a felhasználónak címmel és dátummal együtt, meglehessen nyitni, módosítani, és ki is lehessen törölni.
-    A felhasználói felületet szín szerint lehessen változtatni.
+
     Az esetleges hibákat popup ablakban jelenjenek meg.
-    A felhasználót kilehessen törölni, ilyenkor tőrlődjenek az adatok is.
+
+    A felhasználót kilehessen törölni, ilyenkor tőrlődjenek a hozzá kapcsolódó adatok is.
 
 
 Adatbázis specifikáció:
     
-    2 adattábla van, egy users meg egy logEntry.
-    A users-ben tároljuk a felhaszáló nevét, kódját, és az id-t.
-    A logEntry-ben tároljuk a naplóbejegyzés id-jét, címét, a szövegét, dátumát, és egy külső kúlcsot, 
-    amivel összekapcsoljuk, hogy melyik felhaszálóhoz tartozik.
-    Ez egy "egy sok" kapcsolat, mert egy felhasználónak több naplóbejegyzése is lehet, de egy napló bejegyzésnek csak egy felhasználója.
+    2 adattábla van, egy users meg egy logEntry. +
+
+    A users-ben tároljuk a felhaszáló nevét, kódját, és az id-t. +
+
+    A logEntry-ben tároljuk a naplóbejegyzés id-jét, címét, a szövegét, dátumát, és egy külső kúlcsot,
+    amivel összekapcsoljuk, hogy melyik felhaszálóhoz tartozik. +
+
+    Ez egy "egy sok" kapcsolat, mert egy felhasználónak több naplóbejegyzése is lehet, de egy napló bejegyzésnek 
+    csak egy felhasználója. +

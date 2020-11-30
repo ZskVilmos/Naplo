@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DB {
-    final String JDBC_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+//    final String JDBC_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     final String URL = "jdbc:derby:NoteDB;create=true";
     final String USERNAME = "";
     final String PASSWORD = "";
@@ -60,12 +60,10 @@ public class DB {
             if(!rs1.next()){
 //              A users-ben tároljuk a felhaszáló nevét, kódját, és az id-t.
                 createStatement.execute("create table users(userID int not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),name varchar(10), password varchar(20))");
-                System.out.println("mu");
             }
             if(!rs2.next()){
 //              A logEntry-ben tároljuk a naplóbejegyzés id-ját, címét, a szövegét, dátumát, és egy külső kulcsot
-                createStatement.execute("create table logEntry(logID int not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),logTitle varchar(20), logText varchar(10000), datum date,userID int references users(userID))");
-                System.out.println("haha");
+                createStatement.execute("create table logEntry(logID int not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),logTitle varchar(20), logText varchar(10000), datum varchar(20),userID int references users(userID))");
             }
             
             System.out.println("Az adattáblák létrejöttek");
@@ -74,56 +72,73 @@ public class DB {
             System.out.println(""+ex);
         }
     }
-    
-    public ArrayList<Users> getAllUsers(){
-        String sql = "Select * from contacts";
-        ArrayList<Users> usersArray = null;
+    /** visszaadja az összes napló bejegyzést, az aktuális user id-t hozzákell adni*/
+    public ArrayList<LogEntry> getAllLogEntry(Users user){
+        String sql = "Select * from logEntry WHERE users." + user.getId() + "= logEntry.userID";
+        ArrayList<LogEntry> LogEntryArray = null;
         try {
             ResultSet rs = createStatement.executeQuery(sql);
-            usersArray = new ArrayList<>();
+            LogEntryArray = new ArrayList<>();
             
             while(rs.next()) {
-                Users actualUser = new Users(rs.getString("name"),rs.getString("password"));
-                usersArray.add(actualUser);
+                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"));
+                LogEntryArray.add(actualLogEntry);
             }
         } catch (SQLException ex) {
-            System.out.println("Valami baj van a felhasználók kiolvasásakor");
+            System.out.println("Valami baj van a napló bejegyzések kiolvasásakor");
             System.out.println(""+ex);
         }
-        return usersArray;
+        return LogEntryArray;
     }
     
+    /** A user létrehozása, adni kell neki felhaszáló nevet és jelszót */
     public void addUser(Users user) {
         try {
             String sqlAdd = "insert into logEntry (name, password) values(?,?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sqlAdd);
             preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(1, user.getPassword());
+            preparedStatement.setString(2, user.getPassword());
             preparedStatement.execute();
-            //A users-ben tároljuk a felhaszáló nevét, kódját, és az id-t.
+            
         } catch (SQLException ex) {
             System.out.println("Valami baj van a felhasználó létrehozásakor");
             System.out.println(""+ex);
         }
     }
     
+    /** A user beléptetése, bekell írni a felhaszáló nevet és a jelszavát */
     public void entryUser(Users user) {
         
-        
-        
         try {
-            String sqlAdd = "insert into logEntry (name, password) values(?,?)";
+            
+            String sqlAdd = "SELECT * FROM users";
             PreparedStatement preparedStatement = conn.prepareStatement(sqlAdd);
             preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(1, user.getPassword());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getId());
             preparedStatement.execute();
-            //A users-ben tároljuk a felhaszáló nevét, kódját, és az id-t.
+            
         } catch (SQLException ex) {
             System.out.println("Valami baj van a felhasználó létrehozásakor");
             System.out.println(""+ex);
         }
     }
     
+    /** kitörli a userst, és az összes LogEntry-jét*/
+//    public void DeleteUser(Users user) {
+//        
+//        try {
+//            String sqlAdd = "DELETE FROM users WHERE users.userID ==" + user.getId() + "";
+//            PreparedStatement preparedStatement = conn.prepareStatement(sqlAdd);
+//            preparedStatement.setString(1, user.getName());
+//            preparedStatement.setString(1, user.getPassword());
+//            preparedStatement.execute();
+//            //A users-ben tároljuk a felhaszáló nevét, kódját, és az id-t.
+//        } catch (SQLException ex) {
+//            System.out.println("Valami baj van a felhasználó Törlésekor");
+//            System.out.println(""+ex);
+//        }
+//    }
     
     
 }

@@ -1,5 +1,7 @@
 package napló;
 
+
+
 import java.sql.Date;
 import java.util.Calendar;
 import javafx.beans.property.SimpleStringProperty;
@@ -7,16 +9,28 @@ import javafx.beans.property.SimpleStringProperty;
 public class LogEntry {
     private final SimpleStringProperty title;
     private final SimpleStringProperty text;
+    private final SimpleStringProperty date;
 
+    
+    /** alap konstruktor */
     public LogEntry() {
         this.title = new SimpleStringProperty("");
         this.text = new SimpleStringProperty("");
+        this.date = new SimpleStringProperty(getDate());
     }
     
+    /** létrehozáskor használt konstruktor */
+    public LogEntry(String title, String text) {
+        this.title = new SimpleStringProperty (title);
+        this.text = new SimpleStringProperty (text);
+        this.date = new SimpleStringProperty(getDate());
+    }
     
-    public LogEntry(SimpleStringProperty title, SimpleStringProperty text) {
-        this.title = title;
-        this.text = text;
+    /** már meglévő adatok behívásakor használt konstruktor ( mivel ilyenkor "újat" hozunk létre) */
+    public LogEntry(String title, String text, String date) {
+        this.title = new SimpleStringProperty (title);
+        this.text = new SimpleStringProperty (text);
+        this.date = new SimpleStringProperty(date);
     }
 
     public SimpleStringProperty getTitle() {
