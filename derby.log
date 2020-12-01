@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Mon Nov 30 15:01:30 CET 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-0176-1975-5d1f-00000479af50 
-on database directory C:\Users\vilmo\Documents\NetBeansProjects\Napló\NoteDB with class loader sun.misc.Launcher$AppClassLoader@55f96302 
-Loaded from file:/C:/Users/vilmo/Documents/NetBeansProjects/Napl%c3%b3/dist/run539755118/lib/derby.jar
+Tue Dec 01 10:12:06 CET 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-0176-1d92-c3cb-000004b766f0 
+on database directory C:\Users\Gyozo\Documents\NetBeansProjects\Naplo\NoteDB with class loader sun.misc.Launcher$AppClassLoader@55f96302 
+Loaded from file:/C:/Users/Gyozo/Documents/NetBeansProjects/Naplo/dist/run744270940/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_231-b11
-user.dir=C:\Users\vilmo\Documents\NetBeansProjects\Napló
+java.runtime.version=1.8.0_181-b13
+user.dir=C:\Users\Gyozo\Documents\NetBeansProjects\Naplo
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

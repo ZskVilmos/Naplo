@@ -7,16 +7,21 @@ package napló;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -102,7 +107,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Menu mainHelp;
     @FXML
-    private ListView mainListView;
+    private TableView mainListView;
     
     @FXML
     private MenuBar mainPaneMenuBar;
@@ -116,6 +121,8 @@ public class FXMLDocumentController implements Initializable {
 
 //</editor-fold>
     
+    
+    private final ObservableList<LogEntry> LogData = FXCollections.observableArrayList();
     
     // ezzel váltunk a bejelentkezés pane-re
     @FXML
@@ -219,6 +226,17 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        /* A tábla megjelenítésnél használjuk */
+        TableColumn TitleCol = new TableColumn("Cím"); // table column létrehozása
+        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
+        TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); /*  setCellValueFactory(ezzel állítjuk be az értékét), 
+        new PropertyValueFactory (megmondjuk h melyik pojoból szedje ki, és h mit szedjen ki) */
+        
+        TableColumn DateCol = new TableColumn("Dátum");
+        DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
+        
+        mainListView.getColumns().addAll(TitleCol,DateCol);
+    
     }    
     
 }

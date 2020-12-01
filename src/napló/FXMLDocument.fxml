@@ -83,13 +83,6 @@
                </BorderPane.margin>
             </TextArea>
          </center>
-         <left>
-            <ListView id="mainListView" fx:id="mainListView" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="30.0" left="30.0" right="30.0" top="5.0" />
-               </BorderPane.margin>
-            </ListView>
-         </left>
          <bottom>
             <SplitPane dividerPositions="0.5569620253164557" style="-fx-background-color: E2EEF0;" BorderPane.alignment="CENTER">
                <items>
@@ -97,10 +90,24 @@
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Button" />
                </items>
                <padding>
-                  <Insets bottom="20.0" />
+                  <Insets bottom="20.0" left="30.0" />
                </padding>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </SplitPane>
          </bottom>
+         <left>
+            <TableView id="mainListView" fx:id="mainListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+               <BorderPane.margin>
+                  <Insets bottom="30.0" left="30.0" right="15.0" top="5.0" />
+               </BorderPane.margin>
+            </TableView>
+         </left>
       </BorderPane>
     </children>
 </AnchorPane>
