@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
@@ -77,17 +78,16 @@
             </MenuBar>
          </top>
          <center>
-            <TextArea id="mainTextArea" fx:id="mainTextArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TextArea id="mainTextArea" fx:id="mainTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Íj bele valamit" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets bottom="30.0" right="30.0" top="5.0" />
+                  <Insets bottom="5.0" right="30.0" top="5.0" />
                </BorderPane.margin>
             </TextArea>
          </center>
          <bottom>
-            <SplitPane dividerPositions="0.5569620253164557" style="-fx-background-color: E2EEF0;" BorderPane.alignment="CENTER">
+            <SplitPane id="mainPaneBottom" fx:id="mainPaneBottom" style="-fx-background-color: E2EEF0;" BorderPane.alignment="CENTER">
                <items>
                   <Button id="MainBackButton" fx:id="MainBackButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#handleMainBackButton" text="Kijelentkezés" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Button" />
                </items>
                <padding>
                   <Insets bottom="20.0" left="30.0" />
@@ -98,11 +98,27 @@
             </SplitPane>
          </bottom>
          <left>
-            <TableView id="mainListView" fx:id="mainListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <SplitPane dividerPositions="0.8976833976833977" minWidth="397.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="397.0" BorderPane.alignment="CENTER">
+              <items>
+                <AnchorPane>
+                     <children>
+                        <TableView id="mainListView" fx:id="mainListView" prefHeight="114.0" prefWidth="158.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </AnchorPane>
+                <AnchorPane maxHeight="50.0" maxWidth="600.0" minHeight="50.0" minWidth="400.0">
+                     <children>
+                        <TextField id="NewLogAddTitleTextField" fx:id="NewLogAddTitleTextField" layoutX="133.0" layoutY="10.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="150.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <Label layoutX="22.0" layoutY="10.0" text="Új Napló címe" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <Button id="newLogAddButton" fx:id="newLogAddButton" layoutX="316.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleNewLogAddButton" text="Hozzáad" />
+                     </children></AnchorPane>
+              </items>
                <BorderPane.margin>
-                  <Insets bottom="30.0" left="30.0" right="15.0" top="5.0" />
+                  <Insets bottom="5.0" left="30.0" right="15.0" top="5.0" />
                </BorderPane.margin>
-            </TableView>
+            </SplitPane>
          </left>
       </BorderPane>
     </children>

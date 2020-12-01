@@ -10,7 +10,6 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -30,11 +30,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import static javax.management.Query.value;
 
-
-/**
- *
- * @author Gyozo
- */
 public class FXMLDocumentController implements Initializable {
     
     //<editor-fold defaultstate="collapsed" desc="FXML">
@@ -91,6 +86,9 @@ public class FXMLDocumentController implements Initializable {
     private Button MainBackButton;
     
     @FXML
+    private Button newLogAddButton;
+    
+    @FXML
     private MenuItem mainBack;
     @FXML
     private MenuItem mainColorLightPink;
@@ -119,6 +117,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextArea mainTextArea;
     
+    @FXML
+    private TextField NewLogAddTitleTextField;
+    
+    @FXML
+    private SplitPane mainPaneBottom;
+    
 //</editor-fold>
     
     
@@ -129,12 +133,13 @@ public class FXMLDocumentController implements Initializable {
     private final ObservableList<LogEntry> LogData = 
             FXCollections.observableArrayList();
     
+//<editor-fold defaultstate="collapsed" desc="Buttons">
     // ezzel váltunk a bejelentkezés pane-re
     @FXML
     private void handleStartLogButton(ActionEvent event) {
         logPane.setVisible(true);
         StartPane.setVisible(false);
-
+        
     }
     
     // ezzel váltunk a regisztráció pane-re
@@ -162,9 +167,11 @@ public class FXMLDocumentController implements Initializable {
     private void handleLogEntryButton(ActionEvent event) {
         mainPane.setVisible(true);
         logPane.setVisible(false);
+        mainTextArea.setEditable(false);
         Stage stage = (Stage) logEntryButton.getScene().getWindow();
-        stage.setResizable(true);
+        stage.setResizable(false);
         stage.setMaximized(true);
+        
     }
     
     // ezzel váltunk a regisztráció pane-re
@@ -179,57 +186,74 @@ public class FXMLDocumentController implements Initializable {
         mainPane.setVisible(false);
         StartPane.setVisible(true);
         Stage stage = (Stage) logEntryButton.getScene().getWindow();
+        stage.setWidth(350);
+        stage.setHeight(300);
         stage.setResizable(false);
         stage.setMaximized(false);
     }
-    // ezzekel váltjuk a háttér színét
+    //<editor-fold defaultstate="collapsed" desc="háttér színek">
+// ezzekel váltjuk a háttér színét
     @FXML
     private void handleMainColorLightPinkMenuButton(ActionEvent event) {
         mainPaneMenuBar.setStyle("-fx-background-color : #F9D5F2;");
         mainPane.setStyle("-fx-background-color : #F9D5F2;");
+        mainPaneBottom.setStyle("-fx-background-color : #F9D5F2;");
         
     }
     @FXML
     private void handleMainColorLightGreenMenuButton(ActionEvent event) {
         mainPaneMenuBar.setStyle("-fx-background-color : #C1FDD9;");
         mainPane.setStyle("-fx-background-color : #C1FDD9;");
+        mainPaneBottom.setStyle("-fx-background-color : #C1FDD9;");
     }
     @FXML
     private void handleMainColorLightRedMenuButton(ActionEvent event) {
         mainPaneMenuBar.setStyle("-fx-background-color : #FFB9BB;");
         mainPane.setStyle("-fx-background-color : #FFB9BB;");
+        mainPaneBottom.setStyle("-fx-background-color : #FFB9BB;");
     }
     @FXML
     private void handleMainColorPinkMenuButton(ActionEvent event) {
         mainPaneMenuBar.setStyle("-fx-background-color : #F792E3;");
         mainPane.setStyle("-fx-background-color : #F792E3;");
+        mainPaneBottom.setStyle("-fx-background-color : #F792E3;");
     }
     @FXML
     private void handleMainColorGreenMenuButton(ActionEvent event) {
         mainPaneMenuBar.setStyle("-fx-background-color : #55FA97;");
         mainPane.setStyle("-fx-background-color : #55FA97;");
+        mainPaneBottom.setStyle("-fx-background-color : #55FA97;");
     }
     @FXML
     private void handleMainColorRedMenuButton(ActionEvent event) {
         mainPaneMenuBar.setStyle("-fx-background-color : #FA6367;");
         mainPane.setStyle("-fx-background-color : #FA6367;");
+        mainPaneBottom.setStyle("-fx-background-color : #FA6367;");
     }
     @FXML
     private void handleMainColorDefaultMenuButton(ActionEvent event) {
         mainPaneMenuBar.setStyle("-fx-background-color : #E2EEF0;");
         mainPane.setStyle("-fx-background-color : #E2EEF0;");
+        mainPaneBottom.setStyle("-fx-background-color : #E2EEF0;");
     }
+//</editor-fold>
     // ezzel aktiváljuk a segítséget
     @FXML
     private void handleMainHelpMenuButton(ActionEvent event) {
         logPane.setVisible(false);
         StartPane.setVisible(true);
     }
-    
+    // ezzel adjuk hozzá az új naplóbejegyzést
+    @FXML
+    private void handleNewLogAddButton(ActionEvent event) {
+        mainTextArea.setEditable(true);
+        
+    }
+//</editor-fold>
     public void setTableData(){
         /* A tábla megjelenítésnél használjuk */
         TableColumn TitleCol = new TableColumn("Cím"); // table column létrehozása
-        TitleCol.setMinWidth(80); // sose legyen kissebb 100 pixelnél
+        TitleCol.setMinWidth(250); // sose legyen kissebb 100 pixelnél
         TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
         TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); /*  setCellValueFactory(ezzel állítjuk be az értékét), 
         new PropertyValueFactory (megmondjuk h melyik pojoból szedje ki, és h mit szedjen ki) */
@@ -244,7 +268,7 @@ public class FXMLDocumentController implements Initializable {
         });
 
         TableColumn DateCol = new TableColumn("Dátum");
-        DateCol.setMinWidth(120);
+        DateCol.setMinWidth(150);
         DateCol.setCellFactory(TextFieldTableCell.forTableColumn());
         DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
   
