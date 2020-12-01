@@ -3,6 +3,8 @@ package napló;
 
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -51,7 +53,6 @@ public class LogEntry {
     
     public static String getDate(){
         String datum;
-        
         Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH);

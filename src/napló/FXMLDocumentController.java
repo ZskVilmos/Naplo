@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -26,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import static javax.management.Query.value;
 
 
 /**
@@ -106,6 +109,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Menu mainHelp;
+    
     @FXML
     private TableView mainListView;
     
@@ -122,7 +126,8 @@ public class FXMLDocumentController implements Initializable {
 //</editor-fold>
     
     
-    private final ObservableList<LogEntry> LogData = FXCollections.observableArrayList();
+    private final ObservableList<LogEntry> LogData = 
+            FXCollections.observableArrayList();
     
     // ezzel váltunk a bejelentkezés pane-re
     @FXML
@@ -221,22 +226,37 @@ public class FXMLDocumentController implements Initializable {
         StartPane.setVisible(true);
     }
     
-    
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
+    public void setTableData(){
         /* A tábla megjelenítésnél használjuk */
         TableColumn TitleCol = new TableColumn("Cím"); // table column létrehozása
+        TitleCol.setMinWidth(80); // sose legyen kissebb 100 pixelnél
         TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
         TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); /*  setCellValueFactory(ezzel állítjuk be az értékét), 
         new PropertyValueFactory (megmondjuk h melyik pojoból szedje ki, és h mit szedjen ki) */
         
+        TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<LogEntry, String> t) {
+                ((LogEntry) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())
+                ).setTitle(t.getNewValue());
+            }
+        });
+
         TableColumn DateCol = new TableColumn("Dátum");
+        DateCol.setMinWidth(120);
+        DateCol.setCellFactory(TextFieldTableCell.forTableColumn());
         DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
-        
-        mainListView.getColumns().addAll(TitleCol,DateCol);
+  
+        mainListView.getColumns().addAll(TitleCol,DateCol); // itt adjuk hozzá a tábla neveket
+        mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
+    }
     
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        
+        setTableData();
+        
     }    
     
 }
