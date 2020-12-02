@@ -72,29 +72,11 @@ public class DB {
             System.out.println(""+ex);
         }
     }
-    /** visszaadja az összes napló bejegyzést, az aktuális user id-t hozzákell adni*/
-    public ArrayList<LogEntry> getAllLogEntry(Users user){
-        String sql = "Select * from logEntry WHERE users." + user.getId() + "= logEntry.userID";
-        ArrayList<LogEntry> LogEntryArray = null;
-        try {
-            ResultSet rs = createStatement.executeQuery(sql);
-            LogEntryArray = new ArrayList<>();
-            
-            while(rs.next()) {
-                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"));
-                LogEntryArray.add(actualLogEntry);
-            }
-        } catch (SQLException ex) {
-            System.out.println("Valami baj van a napló bejegyzések kiolvasásakor");
-            System.out.println(""+ex);
-        }
-        return LogEntryArray;
-    }
     
     /** A user létrehozása, adni kell neki felhaszáló nevet és jelszót */
     public void addUser(Users user) {
         try {
-            String sqlAdd = "insert into logEntry (name, password) values(?,?)";
+            String sqlAdd = "insert into users (name, password) values(?,?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sqlAdd);
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
@@ -106,22 +88,28 @@ public class DB {
         }
     }
     
+//    public Users checkUser(String name) {
+//        
+//        
+//        
+//    }
+    
     /** A user beléptetése, bekell írni a felhaszáló nevet és a jelszavát */
-    public void entryUser(Users user) {
-        
+    public Users entryUser(String name, String password) {
+        Users newUser = null;
+        String sqlAdd = "SELECT * FROM users where users.name ==" + name ;// ????????????????????????
         try {
-            
-            String sqlAdd = "SELECT * FROM users";
-            PreparedStatement preparedStatement = conn.prepareStatement(sqlAdd);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getId());
-            preparedStatement.execute();
-            
+            ResultSet rs = createStatement.executeQuery(sqlAdd);
+            if(name == rs.getString("name") && password == rs.getString("password")){
+                newUser = new Users(rs.getString("userID"),rs.getString("name"),rs.getString("password"));
+            } else {
+                System.out.println("Nem jó a felhasználó név, vagy a jelszó");
+            }
         } catch (SQLException ex) {
-            System.out.println("Valami baj van a felhasználó létrehozásakor");
+            System.out.println("Valami baj van a felhasználó beolvasásakor");
             System.out.println(""+ex);
         }
+        return newUser;
     }
     
     /** kitörli a userst, és az összes LogEntry-jét*/
@@ -139,6 +127,44 @@ public class DB {
 //            System.out.println(""+ex);
 //        }
 //    }
+    
+    /** létrehozza az aktuális naplót */
+    
+    public void addLogEntry(LogEntry logEntry){
+      try {
+        String sql = "insert into logEntry (logTitle, logText, datum) values (?,?,?)";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1, logEntry.getTitle());
+        preparedStatement.setString(2, logEntry.getText());
+        preparedStatement.setString(3, logEntry.getDate());
+        preparedStatement.execute();
+        } catch (SQLException ex) {
+            System.out.println("Valami baj van a contact hozzáadásakor");
+            System.out.println(""+ex);
+        }
+    }
+    
+    // ???????????????? \/
+    /** visszaadja az összes napló bejegyzést, az aktuális user id-t hozzákell adni*/
+    public ArrayList<LogEntry> getAllLogEntry(String actualUserID){ // nem tuti h String az jó
+        String sql = "Select * from logEntry WHERE users." + actualUserID + "== logEntry.userID";
+        ArrayList<LogEntry> LogEntryArray = null;
+        try {
+            ResultSet rs = createStatement.executeQuery(sql);
+            LogEntryArray = new ArrayList<>();
+            
+            while(rs.next()) {
+                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"));
+                LogEntryArray.add(actualLogEntry);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Valami baj van a napló bejegyzések kiolvasásakor");
+            System.out.println(""+ex);
+        }
+        return LogEntryArray;
+    }
+    
+    
     
     
 }

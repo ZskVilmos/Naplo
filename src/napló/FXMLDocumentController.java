@@ -7,8 +7,10 @@ package napló;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,7 +30,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import static javax.management.Query.value;
+
 
 public class FXMLDocumentController implements Initializable {
     
@@ -128,10 +130,22 @@ public class FXMLDocumentController implements Initializable {
     
 
 //</editor-fold>
-    
+   
+    DB db = new DB();
+    String actuaID = null;
     
     private final ObservableList<LogEntry> LogData = 
             FXCollections.observableArrayList();
+    
+    @FXML
+    private void addLogEntry(ActionEvent event) {
+        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText());
+        LogData.add(newLogEntry);
+        db.addLogEntry(newLogEntry);
+        NewLogAddTitleTextField.clear();
+        mainTextArea.clear();
+    }
+    
     
 //<editor-fold defaultstate="collapsed" desc="Buttons">
     // ezzel váltunk a bejelentkezés pane-re
@@ -152,7 +166,16 @@ public class FXMLDocumentController implements Initializable {
     // ezzel regisztráljuk a felhasználót pane-re
     @FXML
     private void handleRegPaneRegButton(ActionEvent event) {
-        
+        Users newUser = null;
+        if((regNameTF.getText() != null || regNameTF.getText() != "") && (regPasswordTF.getText() != null|| regPasswordTF.getText() != "") && (regPasswordInspectionTF.getText() != null|| regPasswordInspectionTF.getText() != "")){
+            if(regPasswordTF.getText() == regPasswordInspectionTF.getText()){
+                
+            } else {
+                System.out.println("a jelszó, és az ellenörző jelszó nem ugyanaz!");
+            }
+        } else {
+            System.out.println("minden mezőt ki kell tölteni!");
+        }
     }
     
     // ezzel váltunk vissza a main pane-re
@@ -162,16 +185,26 @@ public class FXMLDocumentController implements Initializable {
         StartPane.setVisible(true);
     }
     
-    // ezzel váltunk a regisztráció pane-re
+    // ezzel váltunk a main felületre
     @FXML
     private void handleLogEntryButton(ActionEvent event) {
-        mainPane.setVisible(true);
-        logPane.setVisible(false);
-        mainTextArea.setEditable(false);
-        Stage stage = (Stage) logEntryButton.getScene().getWindow();
-        stage.setResizable(false);
-        stage.setMaximized(true);
-        
+        Users actualUser = null;
+        if((logNameTF.getText() != ""|| logNameTF.getText() != null ) || (logPasswordTF.getText() != "" || logPasswordTF.getText() != null)){
+            actualUser = db.entryUser(logNameTF.getText(), logPasswordTF.getText());
+            if(actualUser != null){
+                mainPane.setVisible(true);
+                logPane.setVisible(false);
+                actuaID = actualUser.getId();
+//              mainTextArea.setEditable(false);
+                Stage stage = (Stage) logEntryButton.getScene().getWindow();
+                stage.setResizable(false);
+                stage.setMaximized(true);
+            } else {
+                System.out.println("nincs ilyen felhasználó");
+            }
+        } else {
+            System.out.println("nem adtál meg felhasználó nevet, vagy jelszót");
+        }
     }
     
     // ezzel váltunk a regisztráció pane-re
@@ -186,6 +219,7 @@ public class FXMLDocumentController implements Initializable {
         mainPane.setVisible(false);
         StartPane.setVisible(true);
         Stage stage = (Stage) logEntryButton.getScene().getWindow();
+        actuaID = null;
         stage.setWidth(350);
         stage.setHeight(300);
         stage.setResizable(false);
@@ -238,24 +272,30 @@ public class FXMLDocumentController implements Initializable {
     }
 //</editor-fold>
     // ezzel aktiváljuk a segítséget
+    // !!!!!!!!!!!! \/
     @FXML
-    private void handleMainHelpMenuButton(ActionEvent event) {
-        logPane.setVisible(false);
-        StartPane.setVisible(true);
+    private void handleMainHelpMenuButton(ActionEvent event) { 
+//        logPane.setVisible(false);
+//        StartPane.setVisible(true);
     }
     // ezzel adjuk hozzá az új naplóbejegyzést
     @FXML
     private void handleNewLogAddButton(ActionEvent event) {
-        mainTextArea.setEditable(true);
-        
+//        mainTextArea.setEditable(true);
+        String newTitle = NewLogAddTitleTextField.getText();
+        String newLog = mainTextArea.getText();
+        LogData.add(new LogEntry(newTitle,newLog));
     }
 //</editor-fold>
+    
+    // ?????????????????? \/
     public void setTableData(){
         /* A tábla megjelenítésnél használjuk */
         TableColumn TitleCol = new TableColumn("Cím"); // table column létrehozása
         TitleCol.setMinWidth(250); // sose legyen kissebb 100 pixelnél
-        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
-        TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); /*  setCellValueFactory(ezzel állítjuk be az értékét), 
+//        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
+        TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); 
+        /*  setCellValueFactory(ezzel állítjuk be az értékét), 
         new PropertyValueFactory (megmondjuk h melyik pojoból szedje ki, és h mit szedjen ki) */
         
         TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
@@ -266,15 +306,15 @@ public class FXMLDocumentController implements Initializable {
                 ).setTitle(t.getNewValue());
             }
         });
+        
 
         TableColumn DateCol = new TableColumn("Dátum");
         DateCol.setMinWidth(150);
-        DateCol.setCellFactory(TextFieldTableCell.forTableColumn());
         DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
   
         mainListView.getColumns().addAll(TitleCol,DateCol); // itt adjuk hozzá a tábla neveket
         mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
-    }
+    } 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

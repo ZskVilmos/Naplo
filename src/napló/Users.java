@@ -7,16 +7,27 @@ public class Users {
     private final SimpleStringProperty password;
     private final SimpleStringProperty id;
     
+    
+    // alap konstruktor biztonsági okokból
     public Users() {
         this.name = new SimpleStringProperty("");
         this.password = new SimpleStringProperty("");
         this.id = new SimpleStringProperty("");
     }
 
+    
+    // létrehozáskor
     public Users(String name, String password) {
         this.name = new SimpleStringProperty(name);
         this.password = new SimpleStringProperty(password);
         this.id = new SimpleStringProperty("");
+    }
+    
+    // belépéskor
+    public Users(String userID, String name, String password) {
+        this.name = new SimpleStringProperty(name);
+        this.password = new SimpleStringProperty(password);
+        this.id = new SimpleStringProperty(userID); // ?????????????????????????????????
     }
 
     public String getName() {

@@ -55,10 +55,13 @@ Adatbázis specifikáció:
     
     2 adattábla van, egy users meg egy logEntry. +
 
-    A users-ben tároljuk a felhaszáló nevét, kódját, és az id-t. +
+    A users-ben tároljuk az id-t , a jelszívát, és a felhaszáló nevét. (userID, name, password) +
 
     A logEntry-ben tároljuk a naplóbejegyzés id-jét, címét, a szövegét, dátumát, és egy külső kúlcsot,
-    amivel összekapcsoljuk, hogy melyik felhaszálóhoz tartozik. +
+    amivel összekapcsoljuk, hogy melyik felhaszálóhoz tartozik. (logID, logTitle, logText, datum, userID(külső kulcs) +
 
     Ez egy "egy sok" kapcsolat, mert egy felhasználónak több naplóbejegyzése is lehet, de egy napló bejegyzésnek 
     csak egy felhasználója. +
+
+    Ha a felhasználó kitörlődik, autómatikusan törlődjön a hozzá tartozó naplóbejegyzések (erre asszem van lehetőség 
+    az adatbázisban, van valamilyen kód hozzá, és nem kell itt megcsinálni)
