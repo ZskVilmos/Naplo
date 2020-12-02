@@ -88,11 +88,22 @@ public class DB {
         }
     }
     
-//    public Users checkUser(String name) {
-//        
-//        
-//        
-//    }
+    public Users checkUser(String name) {
+        String sqlAdd = "SELECT name FROM users";
+        ArrayList<String> users = null;
+        try {
+            ResultSet rs = createStatement.executeQuery(sqlAdd);
+            users = new ArrayList<>();
+            while(rs.next()) {
+                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"));
+                users.add();
+                
+            }
+        } catch (SQLException ex) {
+            System.out.println("Valami baj van a felhasználó lecsekkolásakor");
+            System.out.println(""+ex);
+        }
+    }
     
     /** A user beléptetése, bekell írni a felhaszáló nevet és a jelszavát */
     public Users entryUser(String name, String password) {
