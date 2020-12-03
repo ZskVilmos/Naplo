@@ -132,7 +132,7 @@ public class FXMLDocumentController implements Initializable {
 //</editor-fold>
    
     DB db = new DB();
-    String actuaID = null;
+    int actuaID;
     
     private final ObservableList<LogEntry> LogData = 
             FXCollections.observableArrayList();
@@ -141,7 +141,7 @@ public class FXMLDocumentController implements Initializable {
     private void addLogEntry(ActionEvent event) {
         LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText());
         LogData.add(newLogEntry);
-        db.addLogEntry(newLogEntry);
+        db.addLogEntry(newLogEntry,actuaID);
         NewLogAddTitleTextField.clear();
         mainTextArea.clear();
     }
@@ -166,10 +166,15 @@ public class FXMLDocumentController implements Initializable {
     // ezzel regisztráljuk a felhasználót pane-re
     @FXML
     private void handleRegPaneRegButton(ActionEvent event) {
-        Users newUser = null;
-        if((regNameTF.getText() != null || regNameTF.getText() != "") && (regPasswordTF.getText() != null|| regPasswordTF.getText() != "") && (regPasswordInspectionTF.getText() != null|| regPasswordInspectionTF.getText() != "")){
-            if(regPasswordTF.getText() == regPasswordInspectionTF.getText()){
-                
+        Users newUser = new Users(regNameTF.getText(),regPasswordTF.getText());
+        if(!regNameTF.getText().isEmpty() && !regPasswordTF.getText().isEmpty() && !regPasswordInspectionTF.getText().isEmpty()){
+            if((regPasswordTF.getText() != regPasswordInspectionTF.getText()) && (!regPasswordTF.getText().isEmpty())){
+                if(db.checkUser(regNameTF.getText())){
+                    db.addUser(newUser);
+                    System.out.println("létrejött!");
+                } else {
+                    System.out.println("Ez a név már foglalt! másik felhasználó nevet kell megadnod");
+                }
             } else {
                 System.out.println("a jelszó, és az ellenörző jelszó nem ugyanaz!");
             }
@@ -189,13 +194,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleLogEntryButton(ActionEvent event) {
         Users actualUser = null;
-        if((logNameTF.getText() != ""|| logNameTF.getText() != null ) || (logPasswordTF.getText() != "" || logPasswordTF.getText() != null)){
+        if(!logNameTF.getText().isEmpty() && !logPasswordTF.getText().isEmpty()){
             actualUser = db.entryUser(logNameTF.getText(), logPasswordTF.getText());
             if(actualUser != null){
                 mainPane.setVisible(true);
                 logPane.setVisible(false);
                 actuaID = actualUser.getId();
-//              mainTextArea.setEditable(false);
+                db.getAllLogEntry(actuaID);
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
                 stage.setMaximized(true);
@@ -205,6 +210,7 @@ public class FXMLDocumentController implements Initializable {
         } else {
             System.out.println("nem adtál meg felhasználó nevet, vagy jelszót");
         }
+        
     }
     
     // ezzel váltunk a regisztráció pane-re
@@ -219,7 +225,7 @@ public class FXMLDocumentController implements Initializable {
         mainPane.setVisible(false);
         StartPane.setVisible(true);
         Stage stage = (Stage) logEntryButton.getScene().getWindow();
-        actuaID = null;
+        actuaID = 0;
         stage.setWidth(350);
         stage.setHeight(300);
         stage.setResizable(false);
