@@ -181,7 +181,7 @@ public class DB {
                 LogEntryArray = new ArrayList<>();
             
                 while(rs.next()) {
-                    LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"),rs.getInt("logID"),rs.getInt("userID"));
+                    LogEntry actualLogEntry = new LogEntry(rs.getString("logTitle"),rs.getString("logText"),rs.getString("datum"),rs.getInt("logID"),rs.getInt("userID"));
                     LogEntryArray.add(actualLogEntry);
                 }
             } else {
@@ -195,17 +195,5 @@ public class DB {
         }
         return LogEntryArray;
     }
-    
-    public void showAllLogEntry(){
-        String sql = "select* from logEntry";
-        try {
-            ResultSet rs = createStatement.executeQuery(sql);
-            System.out.println(rs);
-        } catch (SQLException ex) {
-            System.out.println("adatok megnézése hiba");
-            System.out.println(""+ex);
-        }
-    }
-    
     
 }

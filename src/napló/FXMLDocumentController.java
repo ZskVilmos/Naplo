@@ -204,7 +204,7 @@ public class FXMLDocumentController implements Initializable {
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
                 stage.setMaximized(true);
-//                setTableData();
+                setTableData();
 //                LogData.addAll(db.getAllLogEntry(actuaID));
 //                mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
             } else {
@@ -335,8 +335,8 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        setTableData();
-        db.showAllLogEntry();
+        
+        
         
     }    
     
