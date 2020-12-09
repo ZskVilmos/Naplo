@@ -23,22 +23,22 @@ public class LogEntry {
     }
     
     /** létrehozáskor használt konstruktor */
-    public LogEntry(String title, String text, String userID) {
+    public LogEntry(String title, String text, Integer userID) {
         
         this.title = new SimpleStringProperty (title);
         this.text = new SimpleStringProperty (text);
         this.date = new SimpleStringProperty(makeDate());
         this.logID = new SimpleStringProperty();
-        this.userID = new SimpleStringProperty();
+        this.userID = new SimpleStringProperty(String.valueOf(userID));
     }
     
     /** már meglévő adatok behívásakor használt konstruktor ( mivel ilyenkor "újat" hozunk létre)*/
-    public LogEntry(String logTitle, String logText, String logDate, String logID, String userID) {
+    public LogEntry(String logTitle, String logText, String logDate, Integer logID, Integer userID) {
         this.title = new SimpleStringProperty (logTitle);
         this.text = new SimpleStringProperty (logText);
         this.date = new SimpleStringProperty(logDate);
-        this.logID = new SimpleStringProperty(logID);
-        this.userID = new SimpleStringProperty(userID);
+        this.logID = new SimpleStringProperty(String.valueOf(logID));
+        this.userID = new SimpleStringProperty(String.valueOf(userID));
     }
 
     public String getTitle() {

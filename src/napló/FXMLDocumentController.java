@@ -132,14 +132,14 @@ public class FXMLDocumentController implements Initializable {
 //</editor-fold>
    
     DB db = new DB();
-    String actuaID;
+    int actuaID;
     
     private final ObservableList<LogEntry> LogData = 
             FXCollections.observableArrayList();
     
     @FXML
     private void addLogEntry(ActionEvent event) {
-        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText(),String.valueOf(actuaID));
+        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText(), actuaID);
         LogData.add(newLogEntry);
         db.addLogEntry(newLogEntry);
         NewLogAddTitleTextField.clear();
@@ -199,7 +199,7 @@ public class FXMLDocumentController implements Initializable {
             if(actualUser != null){
                 mainPane.setVisible(true);
                 logPane.setVisible(false);
-                actuaID = actualUser.getId();
+                actuaID = Integer.parseInt(actualUser.getId());
 //                db.getAllLogEntry(actuaID); // ??????????
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
@@ -227,7 +227,7 @@ public class FXMLDocumentController implements Initializable {
         mainPane.setVisible(false);
         StartPane.setVisible(true);
         Stage stage = (Stage) logEntryButton.getScene().getWindow();
-        actuaID = "";
+        actuaID = 0;
         stage.setWidth(350);
         stage.setHeight(300);
         stage.setResizable(false);
@@ -292,7 +292,7 @@ public class FXMLDocumentController implements Initializable {
 //        mainTextArea.setEditable(true);
         String newTitle = NewLogAddTitleTextField.getText();
         String newLog = mainTextArea.getText();
-        LogEntry newLogEntry = new LogEntry(newTitle,newLog,String.valueOf(actuaID));
+        LogEntry newLogEntry = new LogEntry(newTitle,newLog,actuaID);
         LogData.add(newLogEntry);
         db.addLogEntry(newLogEntry);
     }

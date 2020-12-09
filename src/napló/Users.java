@@ -12,7 +12,7 @@ public class Users {
     public Users() {
         this.name = new SimpleStringProperty("");
         this.password = new SimpleStringProperty("");
-        this.id = new SimpleStringProperty("");
+        this.id = new SimpleStringProperty();
     }
 
     
@@ -20,14 +20,14 @@ public class Users {
     public Users(String name, String password) {
         this.name = new SimpleStringProperty(name);
         this.password = new SimpleStringProperty(password);
-        this.id = new SimpleStringProperty("");
+        this.id = new SimpleStringProperty();
     }
     
     // belépéskor
-    public Users(String name, String password, String userID) {
+    public Users(String name, String password, Integer userID) {
         this.name = new SimpleStringProperty(name);
         this.password = new SimpleStringProperty(password);
-        this.id = new SimpleStringProperty(userID); // ?????????????????????????????????
+        this.id = new SimpleStringProperty(String.valueOf(userID)); // ?????????????????????????????????
     }
 
     public String getName() {

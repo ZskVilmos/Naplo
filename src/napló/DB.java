@@ -125,7 +125,7 @@ public class DB {
             ResultSet rs = createStatement.executeQuery(sqlAdd);
             rs.next();
             if(name.equals(rs.getString("name")) && password.equals(rs.getString("password"))){
-                newUser = new Users(rs.getString("name"),rs.getString("password"),rs.getString("userID"));
+                newUser = new Users(rs.getString("name"),rs.getString("password"),rs.getInt("userID"));
             } else {
                 System.out.println("Nem jó a felhasználó név, vagy a jelszó");
             }
@@ -172,15 +172,15 @@ public class DB {
     
     // ???????????????? \/
     /** visszaadja az összes napló bejegyzést, az aktuális user id-t hozzákell adni*/
-    public ArrayList<LogEntry> getAllLogEntry(String actualUserID){ // nem tuti h String az jó
-        String sql = "Select * from logEntry WHERE logEntry.userID =" + Integer.parseInt(actualUserID);
+    public ArrayList<LogEntry> getAllLogEntry(int actualUserID){ // nem tuti h String az jó
+        String sql = "Select * from logEntry WHERE logEntry.userID =" + actualUserID;
         ArrayList<LogEntry> LogEntryArray = null;
         try {
             ResultSet rs = createStatement.executeQuery(sql);
             LogEntryArray = new ArrayList<>();
             
             while(rs.next()) {
-                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"),rs.getString("logID"),rs.getString("userID"));
+                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"),rs.getInt("logID"),rs.getInt("userID"));
                 LogEntryArray.add(actualLogEntry);
             }
         } catch (SQLException ex) {
