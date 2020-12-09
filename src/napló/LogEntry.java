@@ -9,6 +9,8 @@ public class LogEntry {
     private final SimpleStringProperty title;
     private final SimpleStringProperty text;
     private final SimpleStringProperty date;
+    private final SimpleStringProperty logID;
+    private final SimpleStringProperty userID;
 
     
     /** alap konstruktor */
@@ -16,21 +18,27 @@ public class LogEntry {
         this.title = new SimpleStringProperty("");
         this.text = new SimpleStringProperty("");
         this.date = new SimpleStringProperty(makeDate());
+        this.logID = new SimpleStringProperty();
+        this.userID = new SimpleStringProperty();
     }
     
     /** létrehozáskor használt konstruktor */
-    public LogEntry(String title, String text) {
+    public LogEntry(String title, String text, String userID) {
         
         this.title = new SimpleStringProperty (title);
         this.text = new SimpleStringProperty (text);
         this.date = new SimpleStringProperty(makeDate());
+        this.logID = new SimpleStringProperty();
+        this.userID = new SimpleStringProperty();
     }
     
     /** már meglévő adatok behívásakor használt konstruktor ( mivel ilyenkor "újat" hozunk létre)*/
-    public LogEntry(String logTitle, String logText, String logDate) {
+    public LogEntry(String logTitle, String logText, String logDate, String logID, String userID) {
         this.title = new SimpleStringProperty (logTitle);
         this.text = new SimpleStringProperty (logText);
         this.date = new SimpleStringProperty(logDate);
+        this.logID = new SimpleStringProperty(logID);
+        this.userID = new SimpleStringProperty(userID);
     }
 
     public String getTitle() {
@@ -43,6 +51,14 @@ public class LogEntry {
     
     public String getDate(){
         return date.get();
+    }
+    
+    public String getLogID(){
+        return logID.get();
+    }
+    
+    public String getUserID(){
+        return userID.get();
     }
     
     private String makeDate(){

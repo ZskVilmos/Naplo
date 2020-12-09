@@ -132,16 +132,16 @@ public class FXMLDocumentController implements Initializable {
 //</editor-fold>
    
     DB db = new DB();
-    int actuaID;
+    String actuaID;
     
     private final ObservableList<LogEntry> LogData = 
             FXCollections.observableArrayList();
     
     @FXML
     private void addLogEntry(ActionEvent event) {
-        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText());
+        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText(),String.valueOf(actuaID));
         LogData.add(newLogEntry);
-        db.addLogEntry(newLogEntry,actuaID);
+        db.addLogEntry(newLogEntry);
         NewLogAddTitleTextField.clear();
         mainTextArea.clear();
     }
@@ -192,7 +192,7 @@ public class FXMLDocumentController implements Initializable {
     
     // ezzel váltunk a main felületre
     @FXML
-    private void handleLogEntryButton(ActionEvent event) {
+    private void handleLogEntryButton(ActionEvent event) { // ???????????????????????????????????????????????????
         Users actualUser = null;
         if(!logNameTF.getText().isEmpty() && !logPasswordTF.getText().isEmpty()){
             actualUser = db.entryUser(logNameTF.getText(), logPasswordTF.getText());
@@ -200,10 +200,12 @@ public class FXMLDocumentController implements Initializable {
                 mainPane.setVisible(true);
                 logPane.setVisible(false);
                 actuaID = actualUser.getId();
-                db.getAllLogEntry(actuaID);
+//                db.getAllLogEntry(actuaID); // ??????????
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
                 stage.setMaximized(true);
+//                LogData.addAll(db.getAllLogEntry(actuaID));
+//                mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
             } else {
                 System.out.println("nincs ilyen felhasználó");
             }
@@ -225,7 +227,7 @@ public class FXMLDocumentController implements Initializable {
         mainPane.setVisible(false);
         StartPane.setVisible(true);
         Stage stage = (Stage) logEntryButton.getScene().getWindow();
-        actuaID = 0;
+        actuaID = "";
         stage.setWidth(350);
         stage.setHeight(300);
         stage.setResizable(false);
@@ -286,11 +288,13 @@ public class FXMLDocumentController implements Initializable {
     }
     // ezzel adjuk hozzá az új naplóbejegyzést
     @FXML
-    private void handleNewLogAddButton(ActionEvent event) {
+    private void handleNewLogAddButton(ActionEvent event) { // ???????????????????????????????????????????????
 //        mainTextArea.setEditable(true);
         String newTitle = NewLogAddTitleTextField.getText();
         String newLog = mainTextArea.getText();
-        LogData.add(new LogEntry(newTitle,newLog));
+        LogEntry newLogEntry = new LogEntry(newTitle,newLog,String.valueOf(actuaID));
+        LogData.add(newLogEntry);
+        db.addLogEntry(newLogEntry);
     }
 //</editor-fold>
     
@@ -319,7 +323,11 @@ public class FXMLDocumentController implements Initializable {
         DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
   
         mainListView.getColumns().addAll(TitleCol,DateCol); // itt adjuk hozzá a tábla neveket
+        
+        LogData.addAll(db.getAllLogEntry(actuaID));
+        
         mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
+        
     } 
     
     @Override

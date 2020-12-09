@@ -5,14 +5,14 @@ import javafx.beans.property.SimpleStringProperty;
 public class Users {
     private final SimpleStringProperty name;
     private final SimpleStringProperty password;
-    private final int id;
+    private final SimpleStringProperty id;
     
     
     // alap konstruktor biztonsági okokból
     public Users() {
         this.name = new SimpleStringProperty("");
         this.password = new SimpleStringProperty("");
-        this.id = 0;
+        this.id = new SimpleStringProperty("");
     }
 
     
@@ -20,14 +20,14 @@ public class Users {
     public Users(String name, String password) {
         this.name = new SimpleStringProperty(name);
         this.password = new SimpleStringProperty(password);
-        this.id =0;
+        this.id = new SimpleStringProperty("");
     }
     
     // belépéskor
-    public Users(String name, String password, int userID) {
+    public Users(String name, String password, String userID) {
         this.name = new SimpleStringProperty(name);
         this.password = new SimpleStringProperty(password);
-        this.id = userID; // ?????????????????????????????????
+        this.id = new SimpleStringProperty(userID); // ?????????????????????????????????
     }
 
     public String getName() {
@@ -38,8 +38,8 @@ public class Users {
         return password.get();
     }
 
-    public int getId() {
-        return id;
+    public String getId() {
+        return id.get();
     }
   
     public void setName(String newName) {

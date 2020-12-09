@@ -125,7 +125,7 @@ public class DB {
             ResultSet rs = createStatement.executeQuery(sqlAdd);
             rs.next();
             if(name.equals(rs.getString("name")) && password.equals(rs.getString("password"))){
-                newUser = new Users(rs.getString("name"),rs.getString("password"),rs.getInt("userID"));
+                newUser = new Users(rs.getString("name"),rs.getString("password"),rs.getString("userID"));
             } else {
                 System.out.println("Nem jó a felhasználó név, vagy a jelszó");
             }
@@ -154,7 +154,7 @@ public class DB {
     
     /** létrehozza az aktuális naplót */
     
-    public void addLogEntry(LogEntry logEntry, int userID){
+    public void addLogEntry(LogEntry logEntry){
 
       try {
         String sql = "insert into logEntry (logTitle, logText, datum, userID) values (?,?,?,?)";
@@ -162,7 +162,7 @@ public class DB {
         preparedStatement.setString(1, logEntry.getTitle());
         preparedStatement.setString(2, logEntry.getText());
         preparedStatement.setString(3, logEntry.getDate());
-        preparedStatement.setInt(4, userID);
+        preparedStatement.setString(4, logEntry.getUserID());
         preparedStatement.execute();
         } catch (SQLException ex) {
             System.out.println("Valami baj van a naplób ejegyzés hozzáadásakor");
@@ -172,15 +172,15 @@ public class DB {
     
     // ???????????????? \/
     /** visszaadja az összes napló bejegyzést, az aktuális user id-t hozzákell adni*/
-    public ArrayList<LogEntry> getAllLogEntry(int actualUserID){ // nem tuti h String az jó
-
+    public ArrayList<LogEntry> getAllLogEntry(String actualUserID){ // nem tuti h String az jó
+        String sql = "Select * from logEntry WHERE logEntry.userID =" + Integer.parseInt(actualUserID);
         ArrayList<LogEntry> LogEntryArray = null;
         try {
-            ResultSet rs = createStatement.executeQuery("Select * from logEntry WHERE users " + actualUserID + "= logEntry userID");
+            ResultSet rs = createStatement.executeQuery(sql);
             LogEntryArray = new ArrayList<>();
             
             while(rs.next()) {
-                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"));
+                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"),rs.getString("logID"),rs.getString("userID"));
                 LogEntryArray.add(actualLogEntry);
             }
         } catch (SQLException ex) {
@@ -190,7 +190,14 @@ public class DB {
         return LogEntryArray;
     }
     
-    
+    public void showAllLogEntry(){
+        String sql = "select* from logEntry";
+        try {
+            ResultSet rs = createStatement.executeQuery(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     
 }
