@@ -154,7 +154,7 @@ public class DB {
     
     /** létrehozza az aktuális naplót */
     
-    public void addLogEntry(LogEntry logEntry){
+    public void addLogEntry(LogEntry logEntry,Integer actualUserID){
 
       try {
         String sql = "insert into logEntry (logTitle, logText, datum, userID) values (?,?,?,?)";
@@ -162,7 +162,7 @@ public class DB {
         preparedStatement.setString(1, logEntry.getTitle());
         preparedStatement.setString(2, logEntry.getText());
         preparedStatement.setString(3, logEntry.getDate());
-        preparedStatement.setString(4, logEntry.getUserID());
+        preparedStatement.setInt(4, actualUserID);
         preparedStatement.execute();
         } catch (SQLException ex) {
             System.out.println("Valami baj van a naplób ejegyzés hozzáadásakor");
@@ -177,12 +177,18 @@ public class DB {
         ArrayList<LogEntry> LogEntryArray = null;
         try {
             ResultSet rs = createStatement.executeQuery(sql);
-            LogEntryArray = new ArrayList<>();
+            if(!(rs == null)){
+                LogEntryArray = new ArrayList<>();
             
-            while(rs.next()) {
-                LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"),rs.getInt("logID"),rs.getInt("userID"));
-                LogEntryArray.add(actualLogEntry);
+                while(rs.next()) {
+                    LogEntry actualLogEntry = new LogEntry(rs.getString("title"),rs.getString("text"),rs.getString("date"),rs.getInt("logID"),rs.getInt("userID"));
+                    LogEntryArray.add(actualLogEntry);
+                }
+            } else {
+                System.out.println("üres az adatbázis");
+                
             }
+            
         } catch (SQLException ex) {
             System.out.println("Valami baj van a napló bejegyzések kiolvasásakor");
             System.out.println(""+ex);
@@ -194,8 +200,10 @@ public class DB {
         String sql = "select* from logEntry";
         try {
             ResultSet rs = createStatement.executeQuery(sql);
+            System.out.println(rs);
         } catch (SQLException ex) {
-            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("adatok megnézése hiba");
+            System.out.println(""+ex);
         }
     }
     

@@ -141,7 +141,7 @@ public class FXMLDocumentController implements Initializable {
     private void addLogEntry(ActionEvent event) {
         LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText(), actuaID);
         LogData.add(newLogEntry);
-        db.addLogEntry(newLogEntry);
+        db.addLogEntry(newLogEntry,actuaID);
         NewLogAddTitleTextField.clear();
         mainTextArea.clear();
     }
@@ -204,6 +204,7 @@ public class FXMLDocumentController implements Initializable {
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
                 stage.setMaximized(true);
+//                setTableData();
 //                LogData.addAll(db.getAllLogEntry(actuaID));
 //                mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
             } else {
@@ -294,7 +295,7 @@ public class FXMLDocumentController implements Initializable {
         String newLog = mainTextArea.getText();
         LogEntry newLogEntry = new LogEntry(newTitle,newLog,actuaID);
         LogData.add(newLogEntry);
-        db.addLogEntry(newLogEntry);
+        db.addLogEntry(newLogEntry,actuaID);
     }
 //</editor-fold>
     
@@ -327,6 +328,7 @@ public class FXMLDocumentController implements Initializable {
         LogData.addAll(db.getAllLogEntry(actuaID));
         
         mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
+        System.out.println(actuaID);
         
     } 
     
@@ -334,6 +336,7 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         setTableData();
+        db.showAllLogEntry();
         
     }    
     
