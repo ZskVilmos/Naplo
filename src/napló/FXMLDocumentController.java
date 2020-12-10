@@ -322,9 +322,9 @@ public class FXMLDocumentController implements Initializable {
         TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<LogEntry, String> t) {
-                ((LogEntry) t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())
-                ).setTitle(t.getNewValue());
+                LogEntry actualLogEntry = (LogEntry) t.getTableView().getItems().get(t.getTablePosition().getRow());
+                actualLogEntry.setTitle(t.getNewValue());
+                db.updateLogEntry(actualLogEntry, actuaID);
             }
         });
         
