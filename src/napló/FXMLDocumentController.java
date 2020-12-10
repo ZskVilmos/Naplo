@@ -134,7 +134,7 @@ public class FXMLDocumentController implements Initializable {
     DB db = new DB();
     int actuaID;
     
-    private final ObservableList<LogEntry> LogData = 
+    private ObservableList<LogEntry> LogData = 
             FXCollections.observableArrayList();
     
     @FXML
@@ -206,7 +206,8 @@ public class FXMLDocumentController implements Initializable {
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
                 stage.setMaximized(true);
-                setTableData(); ez minden új belépésnél...
+                setTableData();
+                mainTextArea.clear();
 //                LogData.addAll(db.getAllLogEntry(actuaID));
 //                mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
             } else {
@@ -307,6 +308,11 @@ public class FXMLDocumentController implements Initializable {
     public void setTableData(){
         /* A tábla megjelenítésnél használjuk */
         TableColumn TitleCol = new TableColumn("Cím"); // table column létrehozása
+        TableColumn DateCol = new TableColumn("Dátum");
+        LogData.clear();
+        mainListView.setItems(LogData);
+        
+        
         TitleCol.setMinWidth(250); // sose legyen kissebb 100 pixelnél
 //        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
         TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); 
@@ -323,8 +329,8 @@ public class FXMLDocumentController implements Initializable {
         });
         
 
-        TableColumn DateCol = new TableColumn("Dátum");
-        DateCol.setMinWidth(150);
+        DateCol = new TableColumn("Dátum");
+        DateCol.setMinWidth(143);
         DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
   
         mainListView.getColumns().addAll(TitleCol,DateCol); // itt adjuk hozzá a tábla neveket

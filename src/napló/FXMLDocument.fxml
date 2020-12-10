@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="napló.FXMLDocumentController">
     <children>
-      <Pane id="StartPane" fx:id="StartPane" layoutY="53.0" visible="false">
+      <Pane id="StartPane" fx:id="StartPane" layoutY="53.0">
          <children>
             <Button id="StartLogButton" fx:id="StartLogButton" layoutX="48.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleStartLogButton" text="Bejelentkezés" />
             <Button id="StartRegButton" fx:id="StartRegButton" layoutX="187.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleStartRegButton" text="Felhasználó készítés" />
@@ -48,7 +48,7 @@
             <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="15.0" text="Belépés" />
          </children>
       </Pane>
-      <BorderPane id="mainPane" fx:id="mainPane" layoutY="-1.0" style="-fx-background-color: E2EEF0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane id="mainPane" fx:id="mainPane" layoutY="-1.0" style="-fx-background-color: E2EEF0;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <MenuBar id="mainPaneMenuBar" fx:id="mainPaneMenuBar" style="-fx-background-color: E2EEF0;" BorderPane.alignment="CENTER">
               <menus> 

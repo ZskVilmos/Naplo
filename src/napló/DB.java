@@ -196,4 +196,18 @@ public class DB {
         return LogEntryArray;
     }
     
+    public void updateLogEntry(LogEntry updatedLogEntry,Integer actualUserID){
+      try {
+            String sql = "update logEntry set logTitle = ?, logText = ? where logEntry.userID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, updatedLogEntry.getTitle());
+            preparedStatement.setString(2, updatedLogEntry.getText());
+            preparedStatement.setInt(3, actualUserID);
+            preparedStatement.execute();
+        } catch (SQLException ex) {
+            System.out.println("Valami baj van a contact hozzáadásakor");
+            System.out.println(""+ex);
+        }
+    }
+    
 }
