@@ -196,13 +196,14 @@ public class DB {
         return LogEntryArray;
     }
     
-    public void updateLogEntry(LogEntry updatedLogEntry,Integer actualUserID){
+    public void updateLogEntry(LogEntry updatedLogEntry){
       try {
-            String sql = "update logEntry set logTitle = ?, logText = ? where logEntry.userID = ?";
+            String sql = "update logEntry set logTitle = ?, logText = ? where logEntry.logID = ?";
+            
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, updatedLogEntry.getTitle());
             preparedStatement.setString(2, updatedLogEntry.getText());
-            preparedStatement.setInt(3, actualUserID);
+            preparedStatement.setInt(3, Integer.parseInt(updatedLogEntry.getLogID()));
             preparedStatement.execute();
         } catch (SQLException ex) {
             System.out.println("Valami baj van a contact hozzáadásakor");
@@ -210,4 +211,15 @@ public class DB {
         }
     }
     
+    public void removeLogEntry(LogEntry DeleteLogEntry){
+      try {
+            String sql = "delete from logEntry where logID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, Integer.parseInt(DeleteLogEntry.getLogID()));
+            preparedStatement.execute();
+        } catch (SQLException ex) {
+            System.out.println("Valami baj van a contact törlésekor");
+            System.out.println(""+ex);
+        }
+    }
 }

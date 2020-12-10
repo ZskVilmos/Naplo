@@ -30,6 +30,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.event.Event; 
+import javafx.scene.control.TableCell;
+import javafx.scene.input.MouseButton; 
+import javafx.scene.input.MouseEvent;
+import javafx.util.Callback;
 
 
 public class FXMLDocumentController implements Initializable {
@@ -124,6 +129,8 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private SplitPane mainPaneBottom;
+    
+    
     
 //</editor-fold>
     
@@ -304,36 +311,125 @@ public class FXMLDocumentController implements Initializable {
     }
 //</editor-fold>
     
-    // ?????????????????? \/
+//    public String getText(LogEntry getTextLogEntry){
+//        LogEntry eredmeny = getTextLogEntry;
+//        return eredmeny.getText();
+//    }
+    
     public void setTableData(){
         /* A tábla megjelenítésnél használjuk */
         TableColumn TitleCol = new TableColumn("Cím"); // table column létrehozása
         TableColumn DateCol = new TableColumn("Dátum");
+        TableColumn getCol = new TableColumn( "Megnyitás" );
+        TableColumn removeCol = new TableColumn( "Törlés" );
         LogData.clear();
         mainListView.setItems(LogData);
         
-        
-        TitleCol.setMinWidth(250); // sose legyen kissebb 100 pixelnél
+        TitleCol.setMinWidth(150); // sose legyen kissebb 100 pixelnél
 //        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
+        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn());
         TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); 
         /*  setCellValueFactory(ezzel állítjuk be az értékét), 
         new PropertyValueFactory (megmondjuk h melyik pojoból szedje ki, és h mit szedjen ki) */
         
-        TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
+            TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<LogEntry, String> t) {
                 LogEntry actualLogEntry = (LogEntry) t.getTableView().getItems().get(t.getTablePosition().getRow());
                 actualLogEntry.setTitle(t.getNewValue());
-                db.updateLogEntry(actualLogEntry, actuaID);
+                db.updateLogEntry(actualLogEntry);
+//                mainTextArea.setText(db.getText(actualLogEntry));
             }
-        });
-        
+            
+            
+            
+        });        
 
-        DateCol = new TableColumn("Dátum");
-        DateCol.setMinWidth(143);
+        
+        DateCol.setMinWidth(100);
         DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
-  
-        mainListView.getColumns().addAll(TitleCol,DateCol); // itt adjuk hozzá a tábla neveket
+        
+        
+        getCol.setMinWidth(80);
+        Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory = 
+                new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
+                {
+                    @Override
+                    public TableCell call( final TableColumn<LogEntry, String> param )
+                    {
+                        final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
+                        {   
+                            final Button btn = new Button( "Megnyitás" );
+
+                            @Override
+                            public void updateItem( String item, boolean empty )
+                            {
+                                super.updateItem( item, empty );
+                                if ( empty )
+                                {
+                                    setGraphic( null );
+                                    setText( null );
+                                }
+                                else
+                                {
+                                    btn.setOnAction( ( ActionEvent event ) ->
+                                            {
+                                                LogEntry getLogEntry = getTableView().getItems().get( getIndex() );
+                                                mainTextArea.setText(getLogEntry.getText());
+                                       } );
+                                    setGraphic( btn );
+                                    setText( null );
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        getCol.setCellFactory( cellFactory );
+        
+        removeCol.setMinWidth(80);
+        Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory2 = 
+                new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
+                {
+                    @Override
+                    public TableCell call( final TableColumn<LogEntry, String> param )
+                    {
+                        final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
+                        {   
+                            final Button btn = new Button( "Törlés" );
+
+                            @Override
+                            public void updateItem( String item, boolean empty )
+                            {
+                                super.updateItem( item, empty );
+                                if ( empty )
+                                {
+                                    setGraphic( null );
+                                    setText( null );
+                                }
+                                else
+                                {
+                                    btn.setOnAction( ( ActionEvent event ) ->
+                                            {
+                                                LogEntry deleteLogEntry = getTableView().getItems().get( getIndex() );
+                                                LogData.remove(deleteLogEntry);
+                                                db.removeLogEntry(deleteLogEntry);
+                                       } );
+                                    setGraphic( btn );
+                                    setText( null );
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        removeCol.setCellFactory( cellFactory2 );
+ 
+        csinálni kell módosítás gombot is, és inaktívvá kell tenni a megnyitáskor a textfieldet
+        
+        mainListView.getColumns().addAll(TitleCol,DateCol,getCol,removeCol); // itt adjuk hozzá a tábla neveket
         
         LogData.addAll(db.getAllLogEntry(actuaID));
         
