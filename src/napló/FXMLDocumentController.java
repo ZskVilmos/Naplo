@@ -172,6 +172,8 @@ public class FXMLDocumentController implements Initializable {
                 if(db.checkUser(regNameTF.getText())){
                     db.addUser(newUser);
                     System.out.println("létrejött!");
+                    regPane.setVisible(false);
+                    StartPane.setVisible(true);
                 } else {
                     System.out.println("Ez a név már foglalt! másik felhasználó nevet kell megadnod");
                 }
@@ -204,7 +206,7 @@ public class FXMLDocumentController implements Initializable {
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
                 stage.setMaximized(true);
-                setTableData();
+                setTableData(); ez minden új belépésnél...
 //                LogData.addAll(db.getAllLogEntry(actuaID));
 //                mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
             } else {
@@ -229,6 +231,8 @@ public class FXMLDocumentController implements Initializable {
         StartPane.setVisible(true);
         Stage stage = (Stage) logEntryButton.getScene().getWindow();
         actuaID = 0;
+        
+        
         stage.setWidth(350);
         stage.setHeight(300);
         stage.setResizable(false);
