@@ -1,0 +1,31 @@
+#mainHelpButton {
+	-fx-background-color:#E2EEF0;
+	-fx-background-radius:5px;
+}
+#mainHelpButton:hover{     
+  	-fx-background-color:#0096C9;
+  	-fx-text-fill:white;
+	-fx-background-radius:5px;
+}
+
+#mainPaneMenuBar {
+	-fx-background-color:#E2EEF0;
+	-fx-background-radius:5px;
+}
+
+#mainPaneMenuBar:hover {
+	-fx-background-color:#0096C9;
+  	-fx-text-fill:white;
+	-fx-background-radius:5px;
+}
+
+#MainHelpBackButton {
+	-fx-background-color:#E2EEF0;
+	-fx-background-radius:5px;
+}
+
+#MainHelpBackButton:hover {
+	-fx-background-color:#0096C9;
+  	-fx-text-fill:white;
+	-fx-background-radius:5px;
+}

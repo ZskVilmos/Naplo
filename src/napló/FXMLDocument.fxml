@@ -104,7 +104,7 @@
          <top>
             <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <MenuBar id="mainPaneMenuBar" fx:id="mainPaneMenuBar" style="-fx-background-color: E2EEF0;">
+                  <MenuBar id="mainPaneMenuBar" fx:id="mainPaneMenuBar" AnchorPane.leftAnchor="30.0">
                     <menus> 
                       <Menu mnemonicParsing="false" text="Háttérszín">
                         <items>
@@ -118,19 +118,30 @@
                         </items>
                       </Menu>
                     </menus>
-                     <padding>
-                        <Insets left="23.0" />
-                     </padding>
+                    
                   </MenuBar>
-                  <Button id="mainHelpButton" fx:id="mainHelpButton" layoutX="611.0" mnemonicParsing="false" onAction="#handleMainHelpButton" text="Segítség" />
+                  <Button id="mainHelpButton" fx:id="mainHelpButton" layoutX="611.0" mnemonicParsing="false" onAction="#handleMainHelpButton" text="Segítség" AnchorPane.leftAnchor="127.0" />
                </children>
             </AnchorPane>
          </top>
       </BorderPane>
-      <AnchorPane id="HelpPane" fx:id="HelpPane" opacity="0.3" style="-fx-background-color: gray;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane id="HelpPane" fx:id="HelpPane" style="-: gray;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button id="MainHelpBackButton" fx:id="MainHelpBackButton" mnemonicParsing="false" onAction="#handleMainHelpBackButton" text="Vissza" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Pane layoutX="31.0" layoutY="57.0" prefHeight="378.0" prefWidth="416.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="106.0" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="56.0">
+               <children>
+                  <TextArea editable="false" layoutX="8.0" layoutY="14.0" prefHeight="42.0" prefWidth="401.0" text="Cím: A már meglévő naplóbejegyzés címe,&#10;duplán rákkattintva módosítzható, ha beírás után entert nyomunk." />
+                  <TextArea editable="false" layoutX="8.0" layoutY="66.0" prefHeight="42.0" prefWidth="401.0" text="Dátum: A naplóbejegyzés létrehozásának&#10;dátuma ez csak információt közöl, nem módosítható." />
+                  <TextArea editable="false" layoutX="8.0" layoutY="120.0" prefHeight="60.0" prefWidth="401.0" text="Megnyitás: a megnyitást gombot lenyomva megjelenik a már beírt&#10;naplóbejegyzés. Ha szeretnénk módosítani, akkor csak írjuk át a&#10;szöveg tartalmát, és nyomjuk le a módosít gombot." />
+                  <TextArea editable="false" layoutX="8.0" layoutY="189.0" prefHeight="42.0" prefWidth="401.0" text="Törlés: A naplóbejegyzést törlését teszi lehetővé, nem visszaállítható." />
+                  <TextArea editable="false" layoutX="8.0" layoutY="291.0" prefHeight="42.0" prefWidth="401.0" text="Új napló: Megadjuk a napló címét, és beírjuk a kívánt naplóbejegyzést,&#10;ezután rákíttintunk a hozzáad gombot." />
+                  <TextArea editable="false" layoutX="8.0" layoutY="239.0" prefHeight="42.0" prefWidth="401.0" text="Kijelentkezés: rákattintva kijelentkezünk a meglévő fiókból. &#10;A létrehozott naplóbejegyzés megmarad." />
+               </children></Pane>
+            <Pane layoutX="468.0" layoutY="32.0" prefHeight="454.0" prefWidth="196.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="468.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="32.0" />
+            <TextArea editable="false" prefHeight="51.0" prefWidth="167.0" text="Vissza: &#10;A segítségből való kilépés." AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="35.0" />
+            
          </children>
       </AnchorPane>
     </children>
+
 </AnchorPane>

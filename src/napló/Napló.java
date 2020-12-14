@@ -14,11 +14,13 @@ public class Napló extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         
         Scene scene = new Scene(root, 350, 300);
+        scene.getStylesheets().add("file:style.css");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setMaximized(false);
         stage.setTitle("Napló");
         stage.show();
+//        
     }
 
     public static void main(String[] args) {

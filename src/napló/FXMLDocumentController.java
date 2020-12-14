@@ -210,7 +210,7 @@ public class FXMLDocumentController implements Initializable {
     
     // ezzel váltunk a main felületre
     @FXML
-    private void handleLogEntryButton(ActionEvent event) {
+    private void handleLogEntryButton(ActionEvent event) { // ????????????????????????????
         Users actualUser = null;
         if(!logNameTF.getText().isEmpty() && !logPasswordTF.getText().isEmpty()){
             actualUser = db.entryUser(logNameTF.getText(), logPasswordTF.getText());
@@ -305,7 +305,7 @@ public class FXMLDocumentController implements Initializable {
     // ezzel aktiváljuk a segítséget
     // !!!!!!!!!!!! \/
     @FXML
-    private void handleMainHelpButton(ActionEvent event) { // ???????????????????????????????????????????????????
+    private void handleMainHelpButton(ActionEvent event) {
         HelpPane.setVisible(true);
     }
     @FXML
@@ -326,7 +326,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
-    private void handleMainTextUpdateButton(ActionEvent event) { 
+    private void handleMainTextUpdateButton(ActionEvent event) {  //???????????????????????????????
 
         String Text = mainTextArea.getText();
         db.updateLogEntryText(Text,actualLogEntryTextId);
@@ -357,6 +357,7 @@ public class FXMLDocumentController implements Initializable {
 //        
         
         LogData.clear();
+        mainListView.getColumns().clear();
         mainListView.setItems(LogData);
         
         
