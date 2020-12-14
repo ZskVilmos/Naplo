@@ -96,6 +96,9 @@ public class FXMLDocumentController implements Initializable {
     private Button newLogAddButton;
     
     @FXML
+    private Button mainTextUpdateButton;
+    
+    @FXML
     private MenuItem mainBack;
     @FXML
     private MenuItem mainColorLightPink;
@@ -113,7 +116,7 @@ public class FXMLDocumentController implements Initializable {
     private MenuItem mainColorDefault;
     
     @FXML
-    private Menu mainHelp;
+    private Button mainHelpButton;
     
     @FXML
     private TableView mainListView;
@@ -130,25 +133,31 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private SplitPane mainPaneBottom;
     
-    
-    
 //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="helpPane">
+    @FXML
+    private AnchorPane HelpPane;
+    
+    @FXML
+    private Button MainHelpBackButton;
+//</editor-fold>
     
 
 //</editor-fold>
    
     DB db = new DB();
-    int actuaID;
+    int actualUserID;
+    int actualLogEntryTextId;
     
     private ObservableList<LogEntry> LogData = 
             FXCollections.observableArrayList();
     
     @FXML
     private void addLogEntry(ActionEvent event) {
-        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText(), actuaID);
+        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText(), actualUserID);
         LogData.add(newLogEntry);
-        db.addLogEntry(newLogEntry,actuaID);
+        db.addLogEntry(newLogEntry,actualUserID);
         NewLogAddTitleTextField.clear();
         mainTextArea.clear();
     }
@@ -201,14 +210,14 @@ public class FXMLDocumentController implements Initializable {
     
     // ezzel váltunk a main felületre
     @FXML
-    private void handleLogEntryButton(ActionEvent event) { // ???????????????????????????????????????????????????
+    private void handleLogEntryButton(ActionEvent event) {
         Users actualUser = null;
         if(!logNameTF.getText().isEmpty() && !logPasswordTF.getText().isEmpty()){
             actualUser = db.entryUser(logNameTF.getText(), logPasswordTF.getText());
             if(actualUser != null){
                 mainPane.setVisible(true);
                 logPane.setVisible(false);
-                actuaID = Integer.parseInt(actualUser.getId());
+                actualUserID = Integer.parseInt(actualUser.getId());
 //                db.getAllLogEntry(actuaID); // ??????????
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
@@ -238,7 +247,7 @@ public class FXMLDocumentController implements Initializable {
         mainPane.setVisible(false);
         StartPane.setVisible(true);
         Stage stage = (Stage) logEntryButton.getScene().getWindow();
-        actuaID = 0;
+        actualUserID = 0;
         
         
         stage.setWidth(350);
@@ -246,6 +255,7 @@ public class FXMLDocumentController implements Initializable {
         stage.setResizable(false);
         stage.setMaximized(false);
     }
+    
     //<editor-fold defaultstate="collapsed" desc="háttér színek">
 // ezzekel váltjuk a háttér színét
     @FXML
@@ -295,20 +305,35 @@ public class FXMLDocumentController implements Initializable {
     // ezzel aktiváljuk a segítséget
     // !!!!!!!!!!!! \/
     @FXML
-    private void handleMainHelpMenuButton(ActionEvent event) { 
-//        logPane.setVisible(false);
-//        StartPane.setVisible(true);
+    private void handleMainHelpButton(ActionEvent event) { // ???????????????????????????????????????????????????
+        HelpPane.setVisible(true);
+    }
+    @FXML
+    private void handleMainHelpBackButton(ActionEvent event) {
+        HelpPane.setVisible(false);
     }
     // ezzel adjuk hozzá az új naplóbejegyzést
     @FXML
-    private void handleNewLogAddButton(ActionEvent event) { // ???????????????????????????????????????????????
+    private void handleNewLogAddButton(ActionEvent event) {
 //        mainTextArea.setEditable(true);
         String newTitle = NewLogAddTitleTextField.getText();
         String newLog = mainTextArea.getText();
-        LogEntry newLogEntry = new LogEntry(newTitle,newLog,actuaID);
+        LogEntry newLogEntry = new LogEntry(newTitle,newLog,actualUserID);
         LogData.add(newLogEntry);
-        db.addLogEntry(newLogEntry,actuaID);
+        db.addLogEntry(newLogEntry,actualUserID);
+        mainTextArea.clear();
+        NewLogAddTitleTextField.clear();
     }
+    
+    @FXML
+    private void handleMainTextUpdateButton(ActionEvent event) { 
+
+        String Text = mainTextArea.getText();
+        db.updateLogEntryText(Text,actualLogEntryTextId);
+        NewLogAddTitleTextField.clear();
+        setTableData();
+    }
+    
 //</editor-fold>
     
 //    public String getText(LogEntry getTextLogEntry){
@@ -322,10 +347,19 @@ public class FXMLDocumentController implements Initializable {
         TableColumn DateCol = new TableColumn("Dátum");
         TableColumn getCol = new TableColumn( "Megnyitás" );
         TableColumn removeCol = new TableColumn( "Törlés" );
+        
+        TitleCol.setMinWidth(150); // sose legyen kissebb 100 pixelnél
+        DateCol.setMinWidth(100);
+        getCol.setMinWidth(80);
+        removeCol.setMinWidth(80);
+        getCol.setStyle("-fx-alignment: CENTER");
+        removeCol.setStyle("-fx-alignment: CENTER");
+//        
+        
         LogData.clear();
         mainListView.setItems(LogData);
         
-        TitleCol.setMinWidth(150); // sose legyen kissebb 100 pixelnél
+        
 //        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
         TitleCol.setCellFactory(TextFieldTableCell.forTableColumn());
         TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); 
@@ -337,20 +371,16 @@ public class FXMLDocumentController implements Initializable {
             public void handle(TableColumn.CellEditEvent<LogEntry, String> t) {
                 LogEntry actualLogEntry = (LogEntry) t.getTableView().getItems().get(t.getTablePosition().getRow());
                 actualLogEntry.setTitle(t.getNewValue());
-                db.updateLogEntry(actualLogEntry);
+                db.updateLogEntryTitle(actualLogEntry);
 //                mainTextArea.setText(db.getText(actualLogEntry));
             }
             
             
             
-        });        
-
-        
-        DateCol.setMinWidth(100);
+        });
+            
         DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
         
-        
-        getCol.setMinWidth(80);
         Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory = 
                 new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
                 {
@@ -376,6 +406,7 @@ public class FXMLDocumentController implements Initializable {
                                             {
                                                 LogEntry getLogEntry = getTableView().getItems().get( getIndex() );
                                                 mainTextArea.setText(getLogEntry.getText());
+                                                actualLogEntryTextId = Integer.parseInt(getLogEntry.getLogID());
                                        } );
                                     setGraphic( btn );
                                     setText( null );
@@ -388,7 +419,7 @@ public class FXMLDocumentController implements Initializable {
 
         getCol.setCellFactory( cellFactory );
         
-        removeCol.setMinWidth(80);
+        
         Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory2 = 
                 new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
                 {
@@ -427,22 +458,19 @@ public class FXMLDocumentController implements Initializable {
 
         removeCol.setCellFactory( cellFactory2 );
  
-        csinálni kell módosítás gombot is, és inaktívvá kell tenni a megnyitáskor a textfieldet
+//        csinálni kell módosítás gombot is, és inaktívvá kell tenni a megnyitáskor a textfieldet
         
         mainListView.getColumns().addAll(TitleCol,DateCol,getCol,removeCol); // itt adjuk hozzá a tábla neveket
         
-        LogData.addAll(db.getAllLogEntry(actuaID));
+        LogData.addAll(db.getAllLogEntry(actualUserID));
         
         mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
-        System.out.println(actuaID);
+        System.out.println(actualUserID);
         
     } 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        
-        
         
     }    
     

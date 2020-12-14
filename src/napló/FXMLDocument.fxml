@@ -49,34 +49,6 @@
          </children>
       </Pane>
       <BorderPane id="mainPane" fx:id="mainPane" layoutY="-1.0" style="-fx-background-color: E2EEF0;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <MenuBar id="mainPaneMenuBar" fx:id="mainPaneMenuBar" style="-fx-background-color: E2EEF0;" BorderPane.alignment="CENTER">
-              <menus> 
-                <Menu mnemonicParsing="false" text="Háttérszín">
-                  <items>
-                    <MenuItem id="mainColorLightPink" fx:id="mainColorLightPink" mnemonicParsing="false" onAction="#handleMainColorLightPinkMenuButton" style="-fx-background-color: F9D5F2;" text="Világos rózsaszín" />
-                    <MenuItem id="mainColorLightGreen" fx:id="mainColorLightGreen" mnemonicParsing="false" onAction="#handleMainColorLightGreenMenuButton" text="Világos zöld" />
-                    <MenuItem id="mainColorLightRed" fx:id="mainColorLightRed" mnemonicParsing="false" onAction="#handleMainColorLightRedMenuButton" text="Világos piros" />
-                    <MenuItem id="mainColorPink" fx:id="mainColorPink" mnemonicParsing="false" onAction="#handleMainColorPinkMenuButton" text="Rózsaszín" />
-                    <MenuItem id="mainColorGreen" fx:id="mainColorGreen" mnemonicParsing="false" onAction="#handleMainColorGreenMenuButton" text="Zöld" />
-                    <MenuItem id="mainColorRed" fx:id="mainColorRed" mnemonicParsing="false" onAction="#handleMainColorRedMenuButton" text="Piros" />
-                    <MenuItem id="mainColorDefault" fx:id="mainColorDefault" mnemonicParsing="false" onAction="#handleMainColorDefaultMenuButton" text="Visszaállítás" />
-                  </items>
-                </Menu>
-                <Menu id="mainHelp" fx:id="mainHelp" mnemonicParsing="false" text="Segítség">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-               <padding>
-                  <Insets left="23.0" />
-               </padding>
-            </MenuBar>
-         </top>
          <center>
             <TextArea id="mainTextArea" fx:id="mainTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Íj bele valamit" BorderPane.alignment="CENTER">
                <BorderPane.margin>
@@ -98,11 +70,11 @@
             </SplitPane>
          </bottom>
          <left>
-            <SplitPane dividerPositions="0.8976833976833977" minWidth="397.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="397.0" BorderPane.alignment="CENTER">
+            <SplitPane dividerPositions="0.8976833976833977" maxWidth="421.0" minWidth="421.0" orientation="VERTICAL" BorderPane.alignment="CENTER">
               <items>
                 <AnchorPane>
                      <children>
-                        <TableView id="mainListView" fx:id="mainListView" editable="true" prefHeight="114.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView id="mainListView" fx:id="mainListView" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                          <placeholder>
                             <Label text="Nincs adat." />
                           </placeholder>
@@ -118,9 +90,10 @@
                   </AnchorPane>
                 <AnchorPane maxHeight="50.0" maxWidth="600.0" minHeight="50.0" minWidth="400.0">
                      <children>
-                        <TextField id="NewLogAddTitleTextField" fx:id="NewLogAddTitleTextField" layoutX="133.0" layoutY="10.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="150.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <TextField id="NewLogAddTitleTextField" fx:id="NewLogAddTitleTextField" layoutX="113.0" layoutY="10.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="150.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
                         <Label layoutX="22.0" layoutY="10.0" text="Új Napló címe" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                        <Button id="newLogAddButton" fx:id="newLogAddButton" layoutX="316.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleNewLogAddButton" text="Hozzáad" />
+                        <Button id="newLogAddButton" fx:id="newLogAddButton" layoutX="274.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleNewLogAddButton" text="Hozzáad" />
+                        <Button id="mainTextUpdateButton" fx:id="mainTextUpdateButton" layoutX="347.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleMainTextUpdateButton" text="Módosít" />
                      </children></AnchorPane>
               </items>
                <BorderPane.margin>
@@ -128,6 +101,36 @@
                </BorderPane.margin>
             </SplitPane>
          </left>
+         <top>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <MenuBar id="mainPaneMenuBar" fx:id="mainPaneMenuBar" style="-fx-background-color: E2EEF0;">
+                    <menus> 
+                      <Menu mnemonicParsing="false" text="Háttérszín">
+                        <items>
+                          <MenuItem id="mainColorLightPink" fx:id="mainColorLightPink" mnemonicParsing="false" onAction="#handleMainColorLightPinkMenuButton" style="-fx-background-color: F9D5F2;" text="Világos rózsaszín" />
+                          <MenuItem id="mainColorLightGreen" fx:id="mainColorLightGreen" mnemonicParsing="false" onAction="#handleMainColorLightGreenMenuButton" text="Világos zöld" />
+                          <MenuItem id="mainColorLightRed" fx:id="mainColorLightRed" mnemonicParsing="false" onAction="#handleMainColorLightRedMenuButton" text="Világos piros" />
+                          <MenuItem id="mainColorPink" fx:id="mainColorPink" mnemonicParsing="false" onAction="#handleMainColorPinkMenuButton" text="Rózsaszín" />
+                          <MenuItem id="mainColorGreen" fx:id="mainColorGreen" mnemonicParsing="false" onAction="#handleMainColorGreenMenuButton" text="Zöld" />
+                          <MenuItem id="mainColorRed" fx:id="mainColorRed" mnemonicParsing="false" onAction="#handleMainColorRedMenuButton" text="Piros" />
+                          <MenuItem id="mainColorDefault" fx:id="mainColorDefault" mnemonicParsing="false" onAction="#handleMainColorDefaultMenuButton" text="Visszaállítás" />
+                        </items>
+                      </Menu>
+                    </menus>
+                     <padding>
+                        <Insets left="23.0" />
+                     </padding>
+                  </MenuBar>
+                  <Button id="mainHelpButton" fx:id="mainHelpButton" layoutX="611.0" mnemonicParsing="false" onAction="#handleMainHelpButton" text="Segítség" />
+               </children>
+            </AnchorPane>
+         </top>
       </BorderPane>
+      <AnchorPane id="HelpPane" fx:id="HelpPane" opacity="0.3" style="-fx-background-color: gray;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button id="MainHelpBackButton" fx:id="MainHelpBackButton" mnemonicParsing="false" onAction="#handleMainHelpBackButton" text="Vissza" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+         </children>
+      </AnchorPane>
     </children>
 </AnchorPane>

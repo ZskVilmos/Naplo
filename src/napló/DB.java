@@ -196,17 +196,44 @@ public class DB {
         return LogEntryArray;
     }
     
-    public void updateLogEntry(LogEntry updatedLogEntry){
+    public void updateLogEntryTitle(LogEntry updatedLogEntry){
       try {
-            String sql = "update logEntry set logTitle = ?, logText = ? where logEntry.logID = ?";
+            String sql = "update logEntry set logTitle = ? where logEntry.logID = ?";
             
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, updatedLogEntry.getTitle());
-            preparedStatement.setString(2, updatedLogEntry.getText());
-            preparedStatement.setInt(3, Integer.parseInt(updatedLogEntry.getLogID()));
+            preparedStatement.setInt(2, Integer.parseInt(updatedLogEntry.getLogID()));
             preparedStatement.execute();
         } catch (SQLException ex) {
-            System.out.println("Valami baj van a contact hozzáadásakor");
+            System.out.println("Valami baj van a Naplófájl címének módosításakor");
+            System.out.println(""+ex);
+        }
+    }
+    
+//    public void getLogEntryId(LogEntry updatedLogEntry){
+//      try {
+//            String sql = "select logID where logText = ? where logEntry.logID = ?";
+//            
+//            PreparedStatement preparedStatement = conn.prepareStatement(sql);;
+//            preparedStatement.setString(1, updatedLogEntry.getText());
+//            preparedStatement.setInt(2, Integer.parseInt(updatedLogEntry.getLogID()));
+//            preparedStatement.execute();
+//        } catch (SQLException ex) {
+//            System.out.println("Valami baj van a Naplófájl szövegének módosításakor");
+//            System.out.println(""+ex);
+//        }
+//    }
+//    
+    public void updateLogEntryText(String updatedText, int logID){
+      try {
+            String sql = "update logEntry set logText = ? where logEntry.logID = ?";
+            
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);;
+            preparedStatement.setString(1, updatedText);
+            preparedStatement.setInt(2, logID);
+            preparedStatement.execute();
+        } catch (SQLException ex) {
+            System.out.println("Valami baj van a Naplófájl szövegének módosításakor");
             System.out.println(""+ex);
         }
     }
