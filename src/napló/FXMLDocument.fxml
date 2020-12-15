@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="napló.FXMLDocumentController">
     <children>
-      <Pane id="StartPane" fx:id="StartPane" layoutY="53.0">
+      <Pane id="StartPane" fx:id="StartPane" layoutY="53.0" visible="false">
          <children>
             <Button id="StartLogButton" fx:id="StartLogButton" layoutX="48.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleStartLogButton" text="Bejelentkezés" />
             <Button id="StartRegButton" fx:id="StartRegButton" layoutX="187.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleStartRegButton" text="Felhasználó készítés" />
@@ -37,15 +37,18 @@
             <Button id="regCancelButton" fx:id="regCancelButton" layoutX="237.0" layoutY="202.0" mnemonicParsing="false" onAction="#handleRegPaneCancelButton" text="Mégse" />
          </children>
       </Pane>
-      <Pane id="logPane" fx:id="logPane" layoutY="54.0" visible="false">
+      <Pane id="logPane" fx:id="logPane" layoutY="54.0" prefHeight="235.0" prefWidth="350.0">
          <children>
-            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="116.0" prefHeight="17.0" prefWidth="86.0" text="Jelszó:" />
-            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="75.0" text="Felhasználó név:" />
-            <TextField id="logPasswordTF" fx:id="logPasswordTF" layoutX="140.0" layoutY="113.0" />
-            <TextField id="logNameTF" fx:id="logNameTF" layoutX="140.0" layoutY="72.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="90.0" prefHeight="17.0" prefWidth="86.0" text="Jelszó:" />
+            <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="49.0" text="Felhasználó név:" />
+            <TextField id="logNameTF" fx:id="logNameTF" layoutX="140.0" layoutY="46.0" />
             <Button id="logEntryButton" fx:id="logEntryButton" layoutX="110.0" layoutY="166.0" mnemonicParsing="false" onAction="#handleLogEntryButton" text="Belépés" />
             <Button id="logCancelButton" fx:id="logCancelButton" layoutX="220.0" layoutY="166.0" mnemonicParsing="false" onAction="#handleLogCancelButton" text="Mégse" />
             <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="15.0" text="Belépés" />
+            <CheckBox id="logCheckBox" fx:id="logCheckBox" layoutX="140.0" layoutY="124.0" mnemonicParsing="false" prefHeight="17.0" onAction="#togglevisiblePassword" prefWidth="15.0" />
+            <Label layoutX="44.0" layoutY="124.0" text="jelszó mutatása" />
+            <PasswordField id="logPasswordPF" fx:id="logPasswordPF" layoutX="140.0" layoutY="86.0" />
+            <TextField id="logPasswordTF" fx:id="logPasswordTF" layoutX="140.0" layoutY="86.0" />
          </children>
       </Pane>
       <BorderPane id="mainPane" fx:id="mainPane" layoutY="-1.0" style="-fx-background-color: E2EEF0;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -127,7 +130,7 @@
       </BorderPane>
       <AnchorPane id="HelpPane" fx:id="HelpPane" style="-: gray;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button id="MainHelpBackButton" fx:id="MainHelpBackButton" mnemonicParsing="false" onAction="#handleMainHelpBackButton" text="Vissza" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Button id="MainHelpBackButton" fx:id="MainHelpBackButton" mnemonicParsing="false" onAction="#handleMainHelpBackButton" text="Vissza" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="30.0" />
             <Pane layoutX="31.0" layoutY="57.0" prefHeight="378.0" prefWidth="416.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="106.0" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="56.0">
                <children>
                   <TextArea editable="false" layoutX="8.0" layoutY="14.0" prefHeight="42.0" prefWidth="401.0" text="Cím: A már meglévő naplóbejegyzés címe,&#10;duplán rákkattintva módosítzható, ha beírás után entert nyomunk." />

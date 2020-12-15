@@ -7,7 +7,9 @@ package napló;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -31,9 +33,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.event.Event; 
+import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton; 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 
@@ -78,11 +89,17 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField logNameTF;
     @FXML
+    private PasswordField logPasswordPF;
+    @FXML
     private TextField logPasswordTF;
     @FXML
     private Button logEntryButton;
     @FXML
     private Button logCancelButton;
+    @FXML
+    private CheckBox logCheckBox;
+    
+    
 //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="main">
@@ -212,25 +229,25 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleLogEntryButton(ActionEvent event) { // ????????????????????????????
         Users actualUser = null;
-        if(!logNameTF.getText().isEmpty() && !logPasswordTF.getText().isEmpty()){
-            actualUser = db.entryUser(logNameTF.getText(), logPasswordTF.getText());
+        if(!logNameTF.getText().isEmpty() && !logPasswordPF.getText().isEmpty()){
+            actualUser = db.entryUser(logNameTF.getText(), logPasswordPF.getText());
             if(actualUser != null){
+                
                 mainPane.setVisible(true);
                 logPane.setVisible(false);
                 actualUserID = Integer.parseInt(actualUser.getId());
-//                db.getAllLogEntry(actuaID); // ??????????
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
                 stage.setResizable(false);
                 stage.setMaximized(true);
                 setTableData();
                 mainTextArea.clear();
-//                LogData.addAll(db.getAllLogEntry(actuaID));
-//                mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
+                
+
             } else {
                 System.out.println("nincs ilyen felhasználó");
             }
         } else {
-            System.out.println("nem adtál meg felhasználó nevet, vagy jelszót");
+            System.out.println("nem adtál meg felhasználó nevet, vagy jelszót"); // ?????????????????????????????
         }
         
     }
@@ -326,7 +343,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
-    private void handleMainTextUpdateButton(ActionEvent event) {  //???????????????????????????????
+    private void handleMainTextUpdateButton(ActionEvent event) {  
 
         String Text = mainTextArea.getText();
         db.updateLogEntryText(Text,actualLogEntryTextId);
@@ -336,10 +353,23 @@ public class FXMLDocumentController implements Initializable {
     
 //</editor-fold>
     
-//    public String getText(LogEntry getTextLogEntry){
-//        LogEntry eredmeny = getTextLogEntry;
-//        return eredmeny.getText();
-//    }
+    /**
+    * Controls the visibility of the Password field
+    * @param event
+    */
+   @FXML
+   public void togglevisiblePassword(ActionEvent event) {
+        if (logCheckBox.isSelected()) {
+            logPasswordTF.setText(logPasswordPF.getText());
+            logPasswordTF.setVisible(true);
+            logPasswordPF.setVisible(false);
+
+        } else {
+            logPasswordPF.setText(logPasswordTF.getText());
+            logPasswordPF.setVisible(true);
+            logPasswordTF.setVisible(false);
+        }
+   }
     
     public void setTableData(){
         /* A tábla megjelenítésnél használjuk */
@@ -472,7 +502,7 @@ public class FXMLDocumentController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        this.togglevisiblePassword(null);
     }    
     
 }

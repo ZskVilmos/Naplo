@@ -13,6 +13,8 @@ public class Napló extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         
+        
+        
         Scene scene = new Scene(root, 350, 300);
         scene.getStylesheets().add("file:style.css");
         stage.setScene(scene);
