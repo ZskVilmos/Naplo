@@ -36,6 +36,8 @@ import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -199,22 +201,37 @@ public class FXMLDocumentController implements Initializable {
     // ezzel regisztráljuk a felhasználót pane-re
     @FXML
     private void handleRegPaneRegButton(ActionEvent event) {
+        
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Információ");
         Users newUser = new Users(regNameTF.getText(),regPasswordTF.getText());
-        if(!regNameTF.getText().isEmpty() && !regPasswordTF.getText().isEmpty() && !regPasswordInspectionTF.getText().isEmpty()){
-            if((regPasswordTF.getText() != regPasswordInspectionTF.getText()) && (!regPasswordTF.getText().isEmpty())){
+        if((regNameTF.getText().length() ==0) || (regPasswordTF.getText().length() < 7) || (regPasswordInspectionTF.getText().length() < 7)){
+            if((regPasswordTF.getText() == regPasswordInspectionTF.getText()) && (!(regPasswordTF.getText().length() < 2))){
                 if(db.checkUser(regNameTF.getText())){
                     db.addUser(newUser);
-                    System.out.println("létrejött!");
                     regPane.setVisible(false);
                     StartPane.setVisible(true);
                 } else {
-                    System.out.println("Ez a név már foglalt! másik felhasználó nevet kell megadnod");
+                    regNameTF.clear();
+                    regPasswordTF.clear();
+                    regPasswordInspectionTF.clear();
+                    alert.setHeaderText("Ez a név már foglalt! másik felhasználó nevet kell megadnod");
+                    alert.showAndWait();
+                    
                 }
             } else {
-                System.out.println("a jelszó, és az ellenörző jelszó nem ugyanaz!");
+                regNameTF.clear();
+                regPasswordTF.clear();
+                regPasswordInspectionTF.clear();
+                alert.setHeaderText("a jelszó, és az ellenörző jelszó nem ugyanaz!");
+                alert.showAndWait();
             }
         } else {
-            System.out.println("minden mezőt ki kell tölteni!");
+            regNameTF.clear();
+                regPasswordTF.clear();
+                regPasswordInspectionTF.clear();
+                alert.setTitle("Információ");
+                alert.setHeaderText("minden mezőt ki kell tölteni!");
         }
     }
     
@@ -227,7 +244,7 @@ public class FXMLDocumentController implements Initializable {
     
     // ezzel váltunk a main felületre
     @FXML
-    private void handleLogEntryButton(ActionEvent event) { // ????????????????????????????
+    private void handleLogEntryButton(ActionEvent event) {
         Users actualUser = null;
         if(!logNameTF.getText().isEmpty() && !logPasswordPF.getText().isEmpty()){
             actualUser = db.entryUser(logNameTF.getText(), logPasswordPF.getText());
@@ -244,10 +261,18 @@ public class FXMLDocumentController implements Initializable {
                 
 
             } else {
-                System.out.println("nincs ilyen felhasználó");
+                
+                logNameTF.clear();
+                logPasswordTF.clear();
+                logPasswordPF.clear();
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setHeaderText("Rossz felhasználó név, vagy jelszó");
+                alert.setTitle("Információ");
+                alert.showAndWait();
+//                System.out.println(""); // ????????????????????????????????
             }
         } else {
-            System.out.println("nem adtál meg felhasználó nevet, vagy jelszót"); // ?????????????????????????????
+            System.out.println("nem adtál meg felhasználó nevet, vagy jelszót");
         }
         
     }
@@ -390,9 +415,7 @@ public class FXMLDocumentController implements Initializable {
         mainListView.getColumns().clear();
         mainListView.setItems(LogData);
         
-        
-//        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
-        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
         TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); 
         /*  setCellValueFactory(ezzel állítjuk be az értékét), 
         new PropertyValueFactory (megmondjuk h melyik pojoból szedje ki, és h mit szedjen ki) */
@@ -403,7 +426,6 @@ public class FXMLDocumentController implements Initializable {
                 LogEntry actualLogEntry = (LogEntry) t.getTableView().getItems().get(t.getTablePosition().getRow());
                 actualLogEntry.setTitle(t.getNewValue());
                 db.updateLogEntryTitle(actualLogEntry);
-//                mainTextArea.setText(db.getText(actualLogEntry));
             }
             
             
@@ -496,7 +518,6 @@ public class FXMLDocumentController implements Initializable {
         LogData.addAll(db.getAllLogEntry(actualUserID));
         
         mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
-        System.out.println(actualUserID);
         
     } 
     

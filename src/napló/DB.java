@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
 
 public class DB {
 //    final String JDBC_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
