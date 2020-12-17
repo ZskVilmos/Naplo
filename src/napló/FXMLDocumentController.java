@@ -111,23 +111,6 @@ public class FXMLDocumentController implements Initializable {
     private Button mainTextUpdateButton;
     
     @FXML
-    private MenuItem mainBack;
-    @FXML
-    private MenuItem mainColorLightPink;
-    @FXML
-    private MenuItem mainColorLightGreen;
-    @FXML
-    private MenuItem mainColorLightRed;
-    @FXML
-    private MenuItem mainColorPink;
-    @FXML
-    private MenuItem mainColorGreen;
-    @FXML
-    private MenuItem mainColorRed;
-    @FXML
-    private MenuItem mainColorDefault;
-    
-    @FXML
     private Button mainHelpButton;
     
     @FXML
@@ -242,7 +225,7 @@ public class FXMLDocumentController implements Initializable {
         StartPane.setVisible(true);
     }
     
-    // ezzel váltunk a main felületre
+    // ezzel jelentkezünk be és váltunk a main felületre
     @FXML
     private void handleLogEntryButton(ActionEvent event) {
         Users actualUser = null;
@@ -254,7 +237,7 @@ public class FXMLDocumentController implements Initializable {
                 logPane.setVisible(false);
                 actualUserID = Integer.parseInt(actualUser.getId());
                 Stage stage = (Stage) logEntryButton.getScene().getWindow();
-                stage.setResizable(false);
+                stage.setResizable(true);
                 stage.setMaximized(true);
                 setTableData();
                 mainTextArea.clear();
@@ -271,7 +254,13 @@ public class FXMLDocumentController implements Initializable {
                 alert.showAndWait();
             }
         } else {
-            System.out.println("nem adtál meg felhasználó nevet, vagy jelszót");
+            logNameTF.clear();
+            logPasswordTF.clear();
+            logPasswordPF.clear();
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setHeaderText("nem adtál meg felhasználó nevet, vagy jelszót");
+            alert.setTitle("Információ");
+            alert.showAndWait();
         }
         
     }
@@ -307,81 +296,47 @@ public class FXMLDocumentController implements Initializable {
         mainTextArea.clear();
     }
     
-    //<editor-fold defaultstate="collapsed" desc="háttér színek">
-// ezzekel váltjuk a háttér színét
-    @FXML
-    private void handleMainColorLightPinkMenuButton(ActionEvent event) {
-        mainPaneMenuBar.setStyle("-fx-background-color : #F9D5F2;");
-        mainPane.setStyle("-fx-background-color : #F9D5F2;");
-        mainPaneBottom.setStyle("-fx-background-color : #F9D5F2;");
-        
-    }
-    @FXML
-    private void handleMainColorLightGreenMenuButton(ActionEvent event) {
-        mainPaneMenuBar.setStyle("-fx-background-color : #C1FDD9;");
-        mainPane.setStyle("-fx-background-color : #C1FDD9;");
-        mainPaneBottom.setStyle("-fx-background-color : #C1FDD9;");
-    }
-    @FXML
-    private void handleMainColorLightRedMenuButton(ActionEvent event) {
-        mainPaneMenuBar.setStyle("-fx-background-color : #FFB9BB;");
-        mainPane.setStyle("-fx-background-color : #FFB9BB;");
-        mainPaneBottom.setStyle("-fx-background-color : #FFB9BB;");
-    }
-    @FXML
-    private void handleMainColorPinkMenuButton(ActionEvent event) {
-        mainPaneMenuBar.setStyle("-fx-background-color : #F792E3;");
-        mainPane.setStyle("-fx-background-color : #F792E3;");
-        mainPaneBottom.setStyle("-fx-background-color : #F792E3;");
-    }
-    @FXML
-    private void handleMainColorGreenMenuButton(ActionEvent event) {
-        mainPaneMenuBar.setStyle("-fx-background-color : #55FA97;");
-        mainPane.setStyle("-fx-background-color : #55FA97;");
-        mainPaneBottom.setStyle("-fx-background-color : #55FA97;");
-    }
-    @FXML
-    private void handleMainColorRedMenuButton(ActionEvent event) {
-        mainPaneMenuBar.setStyle("-fx-background-color : #FA6367;");
-        mainPane.setStyle("-fx-background-color : #FA6367;");
-        mainPaneBottom.setStyle("-fx-background-color : #FA6367;");
-    }
-    @FXML
-    private void handleMainColorDefaultMenuButton(ActionEvent event) {
-        mainPaneMenuBar.setStyle("-fx-background-color : #E2EEF0;");
-        mainPane.setStyle("-fx-background-color : #E2EEF0;");
-        mainPaneBottom.setStyle("-fx-background-color : #E2EEF0;");
-    }
-//</editor-fold>
     // ezzel aktiváljuk a segítséget
-    // !!!!!!!!!!!! \/
     @FXML
     private void handleMainHelpButton(ActionEvent event) {
         HelpPane.setVisible(true);
+        mainPane.setDisable(true);
     }
+    // ezzel kapcsoljuk ki a segítséget
     @FXML
     private void handleMainHelpBackButton(ActionEvent event) {
         HelpPane.setVisible(false);
+        mainPane.setDisable(false);
     }
     // ezzel adjuk hozzá az új naplóbejegyzést
     @FXML
     private void handleNewLogAddButton(ActionEvent event) {
-        String newTitle = NewLogAddTitleTextField.getText();
-        String newLog = mainTextArea.getText();
-        LogEntry newLogEntry = new LogEntry(newTitle,newLog,actualUserID);
-        LogData.add(newLogEntry);
-        db.addLogEntry(newLogEntry,actualUserID);
-        mainTextArea.clear();
-        NewLogAddTitleTextField.clear();
+        if(NewLogAddTitleTextField.getText().length() > 0){
+            String newTitle = NewLogAddTitleTextField.getText();
+            String newLog = mainTextArea.getText();
+            LogEntry newLogEntry = new LogEntry(newTitle,newLog,actualUserID);
+            LogData.add(newLogEntry);
+            db.addLogEntry(newLogEntry,actualUserID);
+            mainTextArea.clear();
+            NewLogAddTitleTextField.clear();
+        } else {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Információ");
+            alert.setHeaderText("Nem adtál meg címet, cím nélkül nem lehet elmenteni!");
+            alert.showAndWait();
+        }
+        
     }
     
     @FXML
     private void handleMainTextUpdateButton(ActionEvent event) {  
-
+        
         String Text = mainTextArea.getText();
-        db.updateLogEntryText(Text,actualUserID);
+        db.updateLogEntryText(Text,actualLogEntryTextId);
         NewLogAddTitleTextField.clear();
         setTableData();
+        newLogAddButton.setDisable(false);
+        mainTextUpdateButton.setDisable(true);
     }
     
 //</editor-fold>
@@ -405,125 +360,6 @@ public class FXMLDocumentController implements Initializable {
    //<editor-fold defaultstate="collapsed" desc="Tábla beállítása">
    
    public void setTableData(){
-       TableColumn TitleCol = new TableColumn("Cím");
-       TableColumn DateCol = new TableColumn("Dátum");
-       TableColumn getCol = new TableColumn( "Megnyitás" );
-       TableColumn removeCol = new TableColumn( "Törlés" );
-       
-       TitleCol.setMinWidth(150);
-       DateCol.setMinWidth(100);
-       getCol.setMinWidth(80);
-       removeCol.setMinWidth(80);
-       getCol.setStyle("-fx-alignment: CENTER");
-       removeCol.setStyle("-fx-alignment: CENTER");
-       
-//       LogData.clear();
-//       mainListView.getColumns().clear();
-//       mainListView.setItems(LogData);
-       
-       TitleCol.setCellFactory(TextFieldTableCell.forTableColumn());
-       TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title"));
-       
-       TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
-           @Override
-           public void handle(TableColumn.CellEditEvent<LogEntry, String> t) {
-               LogEntry actualLogEntry = (LogEntry) t.getTableView().getItems().get(t.getTablePosition().getRow());
-               actualLogEntry.setTitle(t.getNewValue());
-               db.updateLogEntryTitle(actualLogEntry);
-           }
-           
-           
-           
-       });
-       
-       DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
-       
-       Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory =
-               new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
-               {
-                   @Override
-                   public TableCell call( final TableColumn<LogEntry, String> param )
-                   {
-                       final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
-                       {
-                           final Button btn = new Button( "Megnyitás" );
-                           
-                           @Override
-                           public void updateItem( String item, boolean empty )
-                           {
-                               super.updateItem( item, empty );
-                               if ( empty )
-                               {
-                                   setGraphic( null );
-                                   setText( null );
-                               }
-                               else
-                               {
-                                   btn.setOnAction( ( ActionEvent event ) ->
-                                   {
-                                       LogEntry getLogEntry = getTableView().getItems().get( getIndex() );
-                                       mainTextArea.setText(getLogEntry.getText());
-                                       actualLogEntryTextId = Integer.parseInt(getLogEntry.getLogID());
-                                   } );
-                                   setGraphic( btn );
-                                   setText( null );
-                               }
-                           }
-                       };
-                       return cell;
-                   }
-               };
-       
-       getCol.setCellFactory( cellFactory );
-       
-       
-       Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory2 =
-               new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
-               {
-                   @Override
-                   public TableCell call( final TableColumn<LogEntry, String> param )
-                   {
-                       final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
-                       {
-                           final Button btn = new Button( "Törlés" );
-                           
-                           @Override
-                           public void updateItem( String item, boolean empty )
-                           {
-                               super.updateItem( item, empty );
-                               if ( empty )
-                               {
-                                   setGraphic( null );
-                                   setText( null );
-                               }
-                               else
-                               {
-                                   btn.setOnAction( ( ActionEvent event ) ->
-                                   {
-                                       LogEntry deleteLogEntry = getTableView().getItems().get( getIndex() );
-                                       LogData.remove(deleteLogEntry);
-                                       db.removeLogEntry(deleteLogEntry);
-                                   } );
-                                   setGraphic( btn );
-                                   setText( null );
-                               }
-                           }
-                       };
-                       return cell;
-                   }
-               };
-       
-       removeCol.setCellFactory( cellFactory2 );
-
-    mainListView.getColumns().addAll(TitleCol,DateCol,getCol,removeCol); // itt adjuk hozzá a tábla neveket
-
-    LogData.addAll(db.getAllLogEntry(actualUserID));
-
-    mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
-
-   }
-    
-   public void setTableData2newLogAddButton(){
        TableColumn TitleCol = new TableColumn("Cím");
        TableColumn DateCol = new TableColumn("Dátum");
        TableColumn getCol = new TableColumn( "Megnyitás" );
@@ -580,9 +416,21 @@ public class FXMLDocumentController implements Initializable {
                                {
                                    btn.setOnAction( ( ActionEvent event ) ->
                                    {
+                                       newLogAddButton.setDisable(true);
+                                       mainTextUpdateButton.setDisable(false);
                                        LogEntry getLogEntry = getTableView().getItems().get( getIndex() );
                                        mainTextArea.setText(getLogEntry.getText());
                                        actualLogEntryTextId = Integer.parseInt(getLogEntry.getLogID());
+                                       
+                                        LogData.clear();
+                                        mainListView.getColumns().clear();
+                                        mainListView.setItems(LogData);
+                                        
+                                        mainListView.getColumns().addAll(TitleCol,DateCol,getCol,removeCol); // itt adjuk hozzá a tábla neveket
+
+                                        LogData.addAll(db.getAllLogEntry(actualUserID));
+
+                                        mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
                                    } );
                                    setGraphic( btn );
                                    setText( null );
@@ -619,9 +467,20 @@ public class FXMLDocumentController implements Initializable {
                                {
                                    btn.setOnAction( ( ActionEvent event ) ->
                                    {
-                                       LogEntry deleteLogEntry = getTableView().getItems().get( getIndex() );
-                                       LogData.remove(deleteLogEntry);
-                                       db.removeLogEntry(deleteLogEntry);
+                                        
+                                        LogEntry deleteLogEntry = getTableView().getItems().get( getIndex() );
+                                        LogData.remove(deleteLogEntry);
+                                        db.removeLogEntry(deleteLogEntry);
+                                        
+                                        LogData.clear();
+                                        mainListView.getColumns().clear();
+                                        mainListView.setItems(LogData);
+                                        
+                                        mainListView.getColumns().addAll(TitleCol,DateCol,getCol,removeCol); // itt adjuk hozzá a tábla neveket
+
+                                        LogData.addAll(db.getAllLogEntry(actualUserID));
+
+                                        mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
                                    } );
                                    setGraphic( btn );
                                    setText( null );
@@ -641,6 +500,9 @@ public class FXMLDocumentController implements Initializable {
     mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
 
    }
+    
+
+       
    
 //</editor-fold>
     

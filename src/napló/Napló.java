@@ -26,9 +26,6 @@ public class Napló extends Application {
     public static void main(String[] args) {
         launch(args);
         DB db = new DB();
-        
-        //dátum lekérdezése
-        //System.out.println(LogEntry.getDate());
     }
     
 }

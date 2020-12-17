@@ -223,12 +223,12 @@ public class DB {
 //        }
 //    }
 //    
-    public void updateLogEntryText(String updatedText, Integer actualUserID){
+    public void updateLogEntryText(String updatedText, Integer actualLogID){
       try {
-            String sql = "update logEntry set logText = ? where logEntry.userID  = ?";
+            String sql = "update logEntry set logText = ? where logEntry.logID  = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, updatedText);
-            preparedStatement.setInt(2, actualUserID);
+            preparedStatement.setInt(2, actualLogID);
             preparedStatement.execute();
         } catch (SQLException ex) {
             System.out.println("Valami baj van a Naplófájl szövegének módosításakor");
@@ -243,7 +243,7 @@ public class DB {
             preparedStatement.setInt(1, Integer.parseInt(DeleteLogEntry.getLogID()));
             preparedStatement.execute();
         } catch (SQLException ex) {
-            System.out.println("Valami baj van a contact törlésekor");
+            System.out.println("Valami baj van a Naplófájl törlésekor");
             System.out.println(""+ex);
         }
     }
