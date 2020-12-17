@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package napló;
 
 import java.net.URL;
@@ -54,10 +49,8 @@ public class FXMLDocumentController implements Initializable {
     
     //<editor-fold defaultstate="collapsed" desc="FXML">
     
-    @FXML
-    private AnchorPane AnchorPane;
-    
-    
+//    @FXML
+//    private AnchorPane AnchorPane;
     
     //<editor-fold defaultstate="collapsed" desc="Start">
     @FXML
@@ -164,25 +157,17 @@ public class FXMLDocumentController implements Initializable {
     
 
 //</editor-fold>
-   
+    
+    //<editor-fold defaultstate="collapsed" desc="Osztályváltozók">
     DB db = new DB();
     int actualUserID;
     int actualLogEntryTextId;
-    
-    private ObservableList<LogEntry> LogData = 
+    private ObservableList<LogEntry> LogData =
             FXCollections.observableArrayList();
+//</editor-fold>
+     
+    //<editor-fold defaultstate="collapsed" desc="Gombok">
     
-    @FXML
-    private void addLogEntry(ActionEvent event) {
-        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText(), actualUserID);
-        LogData.add(newLogEntry);
-        db.addLogEntry(newLogEntry,actualUserID);
-        NewLogAddTitleTextField.clear();
-        mainTextArea.clear();
-    }
-    
-    
-//<editor-fold defaultstate="collapsed" desc="Buttons">
     // ezzel váltunk a bejelentkezés pane-re
     @FXML
     private void handleStartLogButton(ActionEvent event) {
@@ -205,33 +190,48 @@ public class FXMLDocumentController implements Initializable {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Információ");
         Users newUser = new Users(regNameTF.getText(),regPasswordTF.getText());
-        if((regNameTF.getText().length() ==0) || (regPasswordTF.getText().length() < 7) || (regPasswordInspectionTF.getText().length() < 7)){
-            if((regPasswordTF.getText() == regPasswordInspectionTF.getText()) && (!(regPasswordTF.getText().length() < 2))){
-                if(db.checkUser(regNameTF.getText())){
-                    db.addUser(newUser);
-                    regPane.setVisible(false);
-                    StartPane.setVisible(true);
+        if((regNameTF.getText().length() > 0) || (regPasswordTF.getText().length() > 5) || (regPasswordInspectionTF.getText().length() > 5)){
+            if((regPasswordTF.getText().length() > 5) && (regPasswordInspectionTF.getText().length() > 5)){
+                if(regPasswordTF.getText().equals(regPasswordInspectionTF.getText())){
+                    if((regNameTF.getText().length() > 0)){
+                        if(db.checkUser(regNameTF.getText())){
+                            db.addUser(newUser);
+                            regPane.setVisible(false);
+                            StartPane.setVisible(true);
+                        } else {
+                            regNameTF.clear();
+                            regPasswordTF.clear();
+                            regPasswordInspectionTF.clear();
+                            alert.setHeaderText("Ez a név már foglalt! másik felhasználó nevet kell megadnod");
+                            alert.showAndWait();
+                        }
+                    } else {
+                        regNameTF.clear();
+                        regPasswordTF.clear();
+                        regPasswordInspectionTF.clear();
+                        alert.setHeaderText("Nem adtál meg felhasználó nevet!");
+                        alert.showAndWait();
+                    }
                 } else {
                     regNameTF.clear();
                     regPasswordTF.clear();
                     regPasswordInspectionTF.clear();
-                    alert.setHeaderText("Ez a név már foglalt! másik felhasználó nevet kell megadnod");
+                    alert.setHeaderText("a jelszó, és az ellenörző jelszó nem ugyanaz!");
                     alert.showAndWait();
-                    
                 }
-            } else {
-                regNameTF.clear();
-                regPasswordTF.clear();
-                regPasswordInspectionTF.clear();
-                alert.setHeaderText("a jelszó, és az ellenörző jelszó nem ugyanaz!");
-                alert.showAndWait();
+            }else{
+                  regNameTF.clear();
+                  regPasswordTF.clear();
+                  regPasswordInspectionTF.clear();
+                  alert.setHeaderText("A jelszónak minimum 6 karakterből kell álnia!");
+                  alert.showAndWait();  
             }
         } else {
             regNameTF.clear();
-                regPasswordTF.clear();
-                regPasswordInspectionTF.clear();
-                alert.setTitle("Információ");
-                alert.setHeaderText("minden mezőt ki kell tölteni!");
+            regPasswordTF.clear();
+            regPasswordInspectionTF.clear();;
+            alert.setHeaderText("minden mezőt ki kell tölteni! A jelszónak minimum 6 karakterből kell álnia!");
+            alert.showAndWait();
         }
     }
     
@@ -269,7 +269,6 @@ public class FXMLDocumentController implements Initializable {
                 alert.setHeaderText("Rossz felhasználó név, vagy jelszó");
                 alert.setTitle("Információ");
                 alert.showAndWait();
-//                System.out.println(""); // ????????????????????????????????
             }
         } else {
             System.out.println("nem adtál meg felhasználó nevet, vagy jelszót");
@@ -296,6 +295,16 @@ public class FXMLDocumentController implements Initializable {
         stage.setHeight(300);
         stage.setResizable(false);
         stage.setMaximized(false);
+    }
+    
+    // Ezzel adjuk hozzá a napló bejegyzést
+    @FXML
+    private void addLogEntry(ActionEvent event) {
+        LogEntry newLogEntry = new LogEntry(NewLogAddTitleTextField.getText(), mainTextArea.getText(), actualUserID);
+        LogData.add(newLogEntry);
+        db.addLogEntry(newLogEntry,actualUserID);
+        NewLogAddTitleTextField.clear();
+        mainTextArea.clear();
     }
     
     //<editor-fold defaultstate="collapsed" desc="háttér színek">
@@ -357,7 +366,6 @@ public class FXMLDocumentController implements Initializable {
     // ezzel adjuk hozzá az új naplóbejegyzést
     @FXML
     private void handleNewLogAddButton(ActionEvent event) {
-//        mainTextArea.setEditable(true);
         String newTitle = NewLogAddTitleTextField.getText();
         String newLog = mainTextArea.getText();
         LogEntry newLogEntry = new LogEntry(newTitle,newLog,actualUserID);
@@ -371,157 +379,272 @@ public class FXMLDocumentController implements Initializable {
     private void handleMainTextUpdateButton(ActionEvent event) {  
 
         String Text = mainTextArea.getText();
-        db.updateLogEntryText(Text,actualLogEntryTextId);
+        db.updateLogEntryText(Text,actualUserID);
         NewLogAddTitleTextField.clear();
         setTableData();
     }
     
 //</editor-fold>
     
-    /**
-    * Controls the visibility of the Password field
-    * @param event
-    */
-   @FXML
-   public void togglevisiblePassword(ActionEvent event) {
+    //<editor-fold defaultstate="collapsed" desc="Check Box">
+    @FXML
+    public void togglevisiblePassword(ActionEvent event) {
         if (logCheckBox.isSelected()) {
             logPasswordTF.setText(logPasswordPF.getText());
             logPasswordTF.setVisible(true);
             logPasswordPF.setVisible(false);
-
+            
         } else {
             logPasswordPF.setText(logPasswordTF.getText());
             logPasswordPF.setVisible(true);
             logPasswordTF.setVisible(false);
         }
+    }
+//</editor-fold>
+    
+   //<editor-fold defaultstate="collapsed" desc="Tábla beállítása">
+   
+   public void setTableData(){
+       TableColumn TitleCol = new TableColumn("Cím");
+       TableColumn DateCol = new TableColumn("Dátum");
+       TableColumn getCol = new TableColumn( "Megnyitás" );
+       TableColumn removeCol = new TableColumn( "Törlés" );
+       
+       TitleCol.setMinWidth(150);
+       DateCol.setMinWidth(100);
+       getCol.setMinWidth(80);
+       removeCol.setMinWidth(80);
+       getCol.setStyle("-fx-alignment: CENTER");
+       removeCol.setStyle("-fx-alignment: CENTER");
+       
+//       LogData.clear();
+//       mainListView.getColumns().clear();
+//       mainListView.setItems(LogData);
+       
+       TitleCol.setCellFactory(TextFieldTableCell.forTableColumn());
+       TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title"));
+       
+       TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
+           @Override
+           public void handle(TableColumn.CellEditEvent<LogEntry, String> t) {
+               LogEntry actualLogEntry = (LogEntry) t.getTableView().getItems().get(t.getTablePosition().getRow());
+               actualLogEntry.setTitle(t.getNewValue());
+               db.updateLogEntryTitle(actualLogEntry);
+           }
+           
+           
+           
+       });
+       
+       DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
+       
+       Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory =
+               new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
+               {
+                   @Override
+                   public TableCell call( final TableColumn<LogEntry, String> param )
+                   {
+                       final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
+                       {
+                           final Button btn = new Button( "Megnyitás" );
+                           
+                           @Override
+                           public void updateItem( String item, boolean empty )
+                           {
+                               super.updateItem( item, empty );
+                               if ( empty )
+                               {
+                                   setGraphic( null );
+                                   setText( null );
+                               }
+                               else
+                               {
+                                   btn.setOnAction( ( ActionEvent event ) ->
+                                   {
+                                       LogEntry getLogEntry = getTableView().getItems().get( getIndex() );
+                                       mainTextArea.setText(getLogEntry.getText());
+                                       actualLogEntryTextId = Integer.parseInt(getLogEntry.getLogID());
+                                   } );
+                                   setGraphic( btn );
+                                   setText( null );
+                               }
+                           }
+                       };
+                       return cell;
+                   }
+               };
+       
+       getCol.setCellFactory( cellFactory );
+       
+       
+       Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory2 =
+               new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
+               {
+                   @Override
+                   public TableCell call( final TableColumn<LogEntry, String> param )
+                   {
+                       final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
+                       {
+                           final Button btn = new Button( "Törlés" );
+                           
+                           @Override
+                           public void updateItem( String item, boolean empty )
+                           {
+                               super.updateItem( item, empty );
+                               if ( empty )
+                               {
+                                   setGraphic( null );
+                                   setText( null );
+                               }
+                               else
+                               {
+                                   btn.setOnAction( ( ActionEvent event ) ->
+                                   {
+                                       LogEntry deleteLogEntry = getTableView().getItems().get( getIndex() );
+                                       LogData.remove(deleteLogEntry);
+                                       db.removeLogEntry(deleteLogEntry);
+                                   } );
+                                   setGraphic( btn );
+                                   setText( null );
+                               }
+                           }
+                       };
+                       return cell;
+                   }
+               };
+       
+       removeCol.setCellFactory( cellFactory2 );
+
+    mainListView.getColumns().addAll(TitleCol,DateCol,getCol,removeCol); // itt adjuk hozzá a tábla neveket
+
+    LogData.addAll(db.getAllLogEntry(actualUserID));
+
+    mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
+
    }
     
-    public void setTableData(){
-        /* A tábla megjelenítésnél használjuk */
-        TableColumn TitleCol = new TableColumn("Cím"); // table column létrehozása
-        TableColumn DateCol = new TableColumn("Dátum");
-        TableColumn getCol = new TableColumn( "Megnyitás" );
-        TableColumn removeCol = new TableColumn( "Törlés" );
-        
-        TitleCol.setMinWidth(150); // sose legyen kissebb 100 pixelnél
-        DateCol.setMinWidth(100);
-        getCol.setMinWidth(80);
-        removeCol.setMinWidth(80);
-        getCol.setStyle("-fx-alignment: CENTER");
-        removeCol.setStyle("-fx-alignment: CENTER");
-//        
-        
-        LogData.clear();
-        mainListView.getColumns().clear();
-        mainListView.setItems(LogData);
-        
-        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn()); // beálítjuk, hogy minden cellának text field legyen a tartalma
-        TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title")); 
-        /*  setCellValueFactory(ezzel állítjuk be az értékét), 
-        new PropertyValueFactory (megmondjuk h melyik pojoból szedje ki, és h mit szedjen ki) */
-        
-            TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<LogEntry, String> t) {
-                LogEntry actualLogEntry = (LogEntry) t.getTableView().getItems().get(t.getTablePosition().getRow());
-                actualLogEntry.setTitle(t.getNewValue());
-                db.updateLogEntryTitle(actualLogEntry);
-            }
-            
-            
-            
-        });
-            
-        DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
-        
-        Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory = 
-                new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
-                {
-                    @Override
-                    public TableCell call( final TableColumn<LogEntry, String> param )
-                    {
-                        final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
-                        {   
-                            final Button btn = new Button( "Megnyitás" );
+   public void setTableData2newLogAddButton(){
+       TableColumn TitleCol = new TableColumn("Cím");
+       TableColumn DateCol = new TableColumn("Dátum");
+       TableColumn getCol = new TableColumn( "Megnyitás" );
+       TableColumn removeCol = new TableColumn( "Törlés" );
+       
+       TitleCol.setMinWidth(150);
+       DateCol.setMinWidth(100);
+       getCol.setMinWidth(80);
+       removeCol.setMinWidth(80);
+       getCol.setStyle("-fx-alignment: CENTER");
+       removeCol.setStyle("-fx-alignment: CENTER");
+       
+       LogData.clear();
+       mainListView.getColumns().clear();
+       mainListView.setItems(LogData);
+       
+       TitleCol.setCellFactory(TextFieldTableCell.forTableColumn());
+       TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title"));
+       
+       TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
+           @Override
+           public void handle(TableColumn.CellEditEvent<LogEntry, String> t) {
+               LogEntry actualLogEntry = (LogEntry) t.getTableView().getItems().get(t.getTablePosition().getRow());
+               actualLogEntry.setTitle(t.getNewValue());
+               db.updateLogEntryTitle(actualLogEntry);
+           }
+           
+           
+           
+       });
+       
+       DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
+       
+       Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory =
+               new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
+               {
+                   @Override
+                   public TableCell call( final TableColumn<LogEntry, String> param )
+                   {
+                       final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
+                       {
+                           final Button btn = new Button( "Megnyitás" );
+                           
+                           @Override
+                           public void updateItem( String item, boolean empty )
+                           {
+                               super.updateItem( item, empty );
+                               if ( empty )
+                               {
+                                   setGraphic( null );
+                                   setText( null );
+                               }
+                               else
+                               {
+                                   btn.setOnAction( ( ActionEvent event ) ->
+                                   {
+                                       LogEntry getLogEntry = getTableView().getItems().get( getIndex() );
+                                       mainTextArea.setText(getLogEntry.getText());
+                                       actualLogEntryTextId = Integer.parseInt(getLogEntry.getLogID());
+                                   } );
+                                   setGraphic( btn );
+                                   setText( null );
+                               }
+                           }
+                       };
+                       return cell;
+                   }
+               };
+       
+       getCol.setCellFactory( cellFactory );
+       
+       
+       Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory2 =
+               new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
+               {
+                   @Override
+                   public TableCell call( final TableColumn<LogEntry, String> param )
+                   {
+                       final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
+                       {
+                           final Button btn = new Button( "Törlés" );
+                           
+                           @Override
+                           public void updateItem( String item, boolean empty )
+                           {
+                               super.updateItem( item, empty );
+                               if ( empty )
+                               {
+                                   setGraphic( null );
+                                   setText( null );
+                               }
+                               else
+                               {
+                                   btn.setOnAction( ( ActionEvent event ) ->
+                                   {
+                                       LogEntry deleteLogEntry = getTableView().getItems().get( getIndex() );
+                                       LogData.remove(deleteLogEntry);
+                                       db.removeLogEntry(deleteLogEntry);
+                                   } );
+                                   setGraphic( btn );
+                                   setText( null );
+                               }
+                           }
+                       };
+                       return cell;
+                   }
+               };
+       
+       removeCol.setCellFactory( cellFactory2 );
 
-                            @Override
-                            public void updateItem( String item, boolean empty )
-                            {
-                                super.updateItem( item, empty );
-                                if ( empty )
-                                {
-                                    setGraphic( null );
-                                    setText( null );
-                                }
-                                else
-                                {
-                                    btn.setOnAction( ( ActionEvent event ) ->
-                                            {
-                                                LogEntry getLogEntry = getTableView().getItems().get( getIndex() );
-                                                mainTextArea.setText(getLogEntry.getText());
-                                                actualLogEntryTextId = Integer.parseInt(getLogEntry.getLogID());
-                                       } );
-                                    setGraphic( btn );
-                                    setText( null );
-                                }
-                            }
-                        };
-                        return cell;
-                    }
-                };
+    mainListView.getColumns().addAll(TitleCol,DateCol,getCol,removeCol); // itt adjuk hozzá a tábla neveket
 
-        getCol.setCellFactory( cellFactory );
-        
-        
-        Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory2 = 
-                new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
-                {
-                    @Override
-                    public TableCell call( final TableColumn<LogEntry, String> param )
-                    {
-                        final TableCell<LogEntry, String> cell = new TableCell<LogEntry, String>()
-                        {   
-                            final Button btn = new Button( "Törlés" );
+    LogData.addAll(db.getAllLogEntry(actualUserID));
 
-                            @Override
-                            public void updateItem( String item, boolean empty )
-                            {
-                                super.updateItem( item, empty );
-                                if ( empty )
-                                {
-                                    setGraphic( null );
-                                    setText( null );
-                                }
-                                else
-                                {
-                                    btn.setOnAction( ( ActionEvent event ) ->
-                                            {
-                                                LogEntry deleteLogEntry = getTableView().getItems().get( getIndex() );
-                                                LogData.remove(deleteLogEntry);
-                                                db.removeLogEntry(deleteLogEntry);
-                                       } );
-                                    setGraphic( btn );
-                                    setText( null );
-                                }
-                            }
-                        };
-                        return cell;
-                    }
-                };
+    mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
 
-        removeCol.setCellFactory( cellFactory2 );
- 
-//        csinálni kell módosítás gombot is, és inaktívvá kell tenni a megnyitáskor a textfieldet
-        
-        mainListView.getColumns().addAll(TitleCol,DateCol,getCol,removeCol); // itt adjuk hozzá a tábla neveket
-        
-        LogData.addAll(db.getAllLogEntry(actualUserID));
-        
-        mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
-        
-    } 
+   }
+   
+//</editor-fold>
     
-    @Override
+   @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.togglevisiblePassword(null);
     }    

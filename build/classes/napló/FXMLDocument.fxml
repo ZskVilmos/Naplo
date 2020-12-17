@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="napló.FXMLDocumentController">
     <children>
-      <Pane id="StartPane" fx:id="StartPane" layoutY="53.0" visible="false">
+      <Pane id="StartPane" fx:id="StartPane" layoutY="53.0" prefHeight="227.0" prefWidth="350.0">
          <children>
             <Button id="StartLogButton" fx:id="StartLogButton" layoutX="48.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleStartLogButton" text="Bejelentkezés" />
             <Button id="StartRegButton" fx:id="StartRegButton" layoutX="187.0" layoutY="143.0" mnemonicParsing="false" onAction="#handleStartRegButton" text="Felhasználó készítés" />
@@ -20,7 +20,7 @@
             <Label layoutX="48.0" layoutY="84.0" prefHeight="17.0" prefWidth="279.0" text="felhasználót, ha elkészült, akkor lehet bejelentkezni." />
          </children>
       </Pane>
-      <Pane id="regPane" fx:id="regPane" layoutY="53.0" visible="false">
+      <Pane id="regPane" fx:id="regPane" layoutY="53.0" prefHeight="227.0" prefWidth="350.0" visible="false">
          <children>
             <Label layoutX="40.0" layoutY="15.0" text="Regisztráció">
                <font>
@@ -37,7 +37,7 @@
             <Button id="regCancelButton" fx:id="regCancelButton" layoutX="237.0" layoutY="202.0" mnemonicParsing="false" onAction="#handleRegPaneCancelButton" text="Mégse" />
          </children>
       </Pane>
-      <Pane id="logPane" fx:id="logPane" layoutY="54.0" prefHeight="235.0" prefWidth="350.0">
+      <Pane id="logPane" fx:id="logPane" layoutY="54.0" prefHeight="227.0" prefWidth="350.0" visible="false">
          <children>
             <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="90.0" prefHeight="17.0" prefWidth="86.0" text="Jelszó:" />
             <Label alignment="CENTER_RIGHT" layoutX="40.0" layoutY="49.0" text="Felhasználó név:" />
@@ -136,7 +136,7 @@
                   <TextArea editable="false" layoutX="8.0" layoutY="14.0" prefHeight="42.0" prefWidth="401.0" text="Cím: A már meglévő naplóbejegyzés címe,&#10;duplán rákkattintva módosítzható, ha beírás után entert nyomunk." />
                   <TextArea editable="false" layoutX="8.0" layoutY="66.0" prefHeight="42.0" prefWidth="401.0" text="Dátum: A naplóbejegyzés létrehozásának&#10;dátuma ez csak információt közöl, nem módosítható." />
                   <TextArea editable="false" layoutX="8.0" layoutY="120.0" prefHeight="60.0" prefWidth="401.0" text="Megnyitás: a megnyitást gombot lenyomva megjelenik a már beírt&#10;naplóbejegyzés. Ha szeretnénk módosítani, akkor csak írjuk át a&#10;szöveg tartalmát, és nyomjuk le a módosít gombot." />
-                  <TextArea editable="false" layoutX="8.0" layoutY="189.0" prefHeight="42.0" prefWidth="401.0" text="Törlés: A naplóbejegyzést törlését teszi lehetővé, nem visszaállítható." />
+                  <TextArea editable="false" layoutX="8.0" layoutY="189.0" prefHeight="42.0" prefWidth="401.0" text="Törlés: A naplóbejegyzés törlését teszi lehetővé, nem visszaállítható." />
                   <TextArea editable="false" layoutX="8.0" layoutY="291.0" prefHeight="42.0" prefWidth="401.0" text="Új napló: Megadjuk a napló címét, és beírjuk a kívánt naplóbejegyzést,&#10;ezután rákíttintunk a hozzáad gombot." />
                   <TextArea editable="false" layoutX="8.0" layoutY="239.0" prefHeight="42.0" prefWidth="401.0" text="Kijelentkezés: rákattintva kijelentkezünk a meglévő fiókból. &#10;A létrehozott naplóbejegyzés megmarad." />
                </children></Pane>

@@ -63,7 +63,7 @@ public class DB {
             }
             if(!rs2.next()){
 //              A logEntry-ben tároljuk a naplóbejegyzés id-ját, címét, a szövegét, dátumát, és egy külső kulcsot
-                createStatement.execute("create table logEntry(logID int not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),logTitle varchar(20), logText varchar(10000), datum varchar(20),userID int references users(userID))");
+                createStatement.execute("create table logEntry(logID int not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),logTitle varchar(20), logText varchar(100000), datum varchar(20),userID int references users(userID))");
             }
             
             System.out.println("Az adattáblák létrejöttek");
@@ -223,13 +223,12 @@ public class DB {
 //        }
 //    }
 //    
-    public void updateLogEntryText(String updatedText, int logID){
+    public void updateLogEntryText(String updatedText, Integer actualUserID){
       try {
-            String sql = "update logEntry set logText = ? where logEntry.logID = ?";
-            
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);;
+            String sql = "update logEntry set logText = ? where logEntry.userID  = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, updatedText);
-            preparedStatement.setInt(2, logID);
+            preparedStatement.setInt(2, actualUserID);
             preparedStatement.execute();
         } catch (SQLException ex) {
             System.out.println("Valami baj van a Naplófájl szövegének módosításakor");
