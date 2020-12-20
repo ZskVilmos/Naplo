@@ -10,9 +10,6 @@ public class Napló extends Application {
     
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
-        
-        
         Scene scene = new Scene(root, 350, 300);
         scene.getStylesheets().add("file:style.css");
         stage.setScene(scene);
@@ -20,7 +17,6 @@ public class Napló extends Application {
         stage.setMaximized(false);
         stage.setTitle("Napló");
         stage.show();
-//        
     }
 
     public static void main(String[] args) {

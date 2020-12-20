@@ -63,7 +63,7 @@ public class DB {
             }
             if(!rs2.next()){
 //              A logEntry-ben tároljuk a naplóbejegyzés id-ját, címét, a szövegét, dátumát, és egy külső kulcsot
-                createStatement.execute("create table logEntry(logID int not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),logTitle varchar(20), logText varchar(100000), datum varchar(20),userID int references users(userID))");
+                createStatement.execute("create table logEntry(logID int not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),logTitle varchar(20), logText varchar(10000), datum varchar(20),userID int references users(userID))");
             }
             
             System.out.println("Az adattáblák létrejöttek");
@@ -104,8 +104,6 @@ public class DB {
                         return false;
                     }
                 }
-                System.out.println("he?");
-                System.out.println(rs.next());
                 return true; // ha igaz, akkor jó a felhasználó név, és fellehet tölteni a controllban a felhasználót (lehetett volna false is, de igazából mind1)
             
             
@@ -134,23 +132,7 @@ public class DB {
         }
         return newUser;
     }
-    
-    /** kitörli a userst, és az összes LogEntry-jét*/
-//    public void DeleteUser(Users user) {
-//        
-//        try {
-//            String sqlAdd = "DELETE FROM users WHERE users.userID ==" + user.getId() + "";
-//            PreparedStatement preparedStatement = conn.prepareStatement(sqlAdd);
-//            preparedStatement.setString(1, user.getName());
-//            preparedStatement.setString(1, user.getPassword());
-//            preparedStatement.execute();
-//            //A users-ben tároljuk a felhaszáló nevét, kódját, és az id-t.
-//        } catch (SQLException ex) {
-//            System.out.println("Valami baj van a felhasználó Törlésekor");
-//            System.out.println(""+ex);
-//        }
-//    }
-    
+
     /** létrehozza az aktuális naplót */
     
     public void addLogEntry(LogEntry logEntry,Integer actualUserID){
@@ -172,7 +154,7 @@ public class DB {
     // ???????????????? \/
     /** visszaadja az összes napló bejegyzést, az aktuális user id-t hozzákell adni*/
     public ArrayList<LogEntry> getAllLogEntry(int actualUserID){ // nem tuti h String az jó
-        String sql = "Select * from logEntry WHERE logEntry.userID =" + actualUserID;
+        String sql = "Select * from logEntry WHERE LogEntry.userID =" + actualUserID;
         ArrayList<LogEntry> LogEntryArray = null;
         try {
             ResultSet rs = createStatement.executeQuery(sql);
@@ -208,21 +190,7 @@ public class DB {
             System.out.println(""+ex);
         }
     }
-    
-//    public void getLogEntryId(LogEntry updatedLogEntry){
-//      try {
-//            String sql = "select logID where logText = ? where logEntry.logID = ?";
-//            
-//            PreparedStatement preparedStatement = conn.prepareStatement(sql);;
-//            preparedStatement.setString(1, updatedLogEntry.getText());
-//            preparedStatement.setInt(2, Integer.parseInt(updatedLogEntry.getLogID()));
-//            preparedStatement.execute();
-//        } catch (SQLException ex) {
-//            System.out.println("Valami baj van a Naplófájl szövegének módosításakor");
-//            System.out.println(""+ex);
-//        }
-//    }
-//    
+
     public void updateLogEntryText(String updatedText, Integer actualLogID){
       try {
             String sql = "update logEntry set logText = ? where logEntry.logID  = ?";

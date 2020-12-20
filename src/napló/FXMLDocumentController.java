@@ -2,9 +2,7 @@ package napló;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,9 +11,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,21 +22,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.event.Event; 
-import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseButton; 
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 
@@ -55,7 +40,6 @@ public class FXMLDocumentController implements Initializable {
     //<editor-fold defaultstate="collapsed" desc="Start">
     @FXML
     private Pane StartPane;
-    
     @FXML
     private Button StartLogButton;
     @FXML
@@ -65,7 +49,6 @@ public class FXMLDocumentController implements Initializable {
     //<editor-fold defaultstate="collapsed" desc="Registration">
     @FXML
     private Pane regPane;
-    
     @FXML
     private TextField regNameTF;
     @FXML
@@ -73,9 +56,15 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField regPasswordInspectionTF;
     @FXML
+    private PasswordField regPasswordPF;
+    @FXML
+    private PasswordField regPasswordInspectionPF;
+    @FXML
     private Button regRegButton;
     @FXML
     private Button regCancelButton;
+    @FXML
+    private CheckBox regCheckBox;
 //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Login">
@@ -115,9 +104,6 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private TableView mainListView;
-    
-    @FXML
-    private MenuBar mainPaneMenuBar;
     
     @FXML
     private TextArea mainTextArea;
@@ -172,10 +158,10 @@ public class FXMLDocumentController implements Initializable {
         
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Információ");
-        Users newUser = new Users(regNameTF.getText(),regPasswordTF.getText());
-        if((regNameTF.getText().length() > 0) || (regPasswordTF.getText().length() > 5) || (regPasswordInspectionTF.getText().length() > 5)){
-            if((regPasswordTF.getText().length() > 5) && (regPasswordInspectionTF.getText().length() > 5)){
-                if(regPasswordTF.getText().equals(regPasswordInspectionTF.getText())){
+        Users newUser = new Users(regNameTF.getText(),regPasswordPF.getText());
+        if((regNameTF.getText().length() > 0) || (regPasswordPF.getText().length() > 5) || (regPasswordInspectionPF.getText().length() > 5)){
+            if((regPasswordPF.getText().length() > 5) && (regPasswordInspectionPF.getText().length() > 5)){
+                if(regPasswordPF.getText().equals(regPasswordInspectionPF.getText())){
                     if((regNameTF.getText().length() > 0)){
                         if(db.checkUser(regNameTF.getText())){
                             db.addUser(newUser);
@@ -185,6 +171,8 @@ public class FXMLDocumentController implements Initializable {
                             regNameTF.clear();
                             regPasswordTF.clear();
                             regPasswordInspectionTF.clear();
+                            regPasswordPF.clear();
+                            regPasswordInspectionPF.clear();
                             alert.setHeaderText("Ez a név már foglalt! másik felhasználó nevet kell megadnod");
                             alert.showAndWait();
                         }
@@ -192,6 +180,8 @@ public class FXMLDocumentController implements Initializable {
                         regNameTF.clear();
                         regPasswordTF.clear();
                         regPasswordInspectionTF.clear();
+                        regPasswordPF.clear();
+                        regPasswordInspectionPF.clear();
                         alert.setHeaderText("Nem adtál meg felhasználó nevet!");
                         alert.showAndWait();
                     }
@@ -199,6 +189,8 @@ public class FXMLDocumentController implements Initializable {
                     regNameTF.clear();
                     regPasswordTF.clear();
                     regPasswordInspectionTF.clear();
+                    regPasswordPF.clear();
+                    regPasswordInspectionPF.clear();
                     alert.setHeaderText("a jelszó, és az ellenörző jelszó nem ugyanaz!");
                     alert.showAndWait();
                 }
@@ -206,13 +198,17 @@ public class FXMLDocumentController implements Initializable {
                   regNameTF.clear();
                   regPasswordTF.clear();
                   regPasswordInspectionTF.clear();
+                  regPasswordPF.clear();
+                regPasswordInspectionPF.clear();
                   alert.setHeaderText("A jelszónak minimum 6 karakterből kell álnia!");
                   alert.showAndWait();  
             }
         } else {
             regNameTF.clear();
             regPasswordTF.clear();
-            regPasswordInspectionTF.clear();;
+            regPasswordInspectionTF.clear();
+            regPasswordPF.clear();
+            regPasswordInspectionPF.clear();
             alert.setHeaderText("minden mezőt ki kell tölteni! A jelszónak minimum 6 karakterből kell álnia!");
             alert.showAndWait();
         }
@@ -315,8 +311,8 @@ public class FXMLDocumentController implements Initializable {
             String newTitle = NewLogAddTitleTextField.getText();
             String newLog = mainTextArea.getText();
             LogEntry newLogEntry = new LogEntry(newTitle,newLog,actualUserID);
-            LogData.add(newLogEntry);
             db.addLogEntry(newLogEntry,actualUserID);
+            setTableData();
             mainTextArea.clear();
             NewLogAddTitleTextField.clear();
         } else {
@@ -343,16 +339,37 @@ public class FXMLDocumentController implements Initializable {
     
     //<editor-fold defaultstate="collapsed" desc="Check Box">
     @FXML
-    public void togglevisiblePassword(ActionEvent event) {
+    public void LogTogglevisiblePassword(ActionEvent event) {
         if (logCheckBox.isSelected()) {
             logPasswordTF.setText(logPasswordPF.getText());
             logPasswordTF.setVisible(true);
             logPasswordPF.setVisible(false);
-            
         } else {
             logPasswordPF.setText(logPasswordTF.getText());
-            logPasswordPF.setVisible(true);
             logPasswordTF.setVisible(false);
+            logPasswordPF.setVisible(true);
+            
+        }
+    }
+    
+    public void RegTogglevisiblePassword(ActionEvent event) {
+        if (regCheckBox.isSelected()) {
+            regPasswordTF.setText(regPasswordPF.getText()); 
+            regPasswordTF.setVisible(true);
+            regPasswordPF.setVisible(false);
+            
+            regPasswordInspectionTF.setText(regPasswordInspectionPF.getText());
+            regPasswordInspectionTF.setVisible(true);
+            regPasswordInspectionPF.setVisible(false);
+            
+        } else {
+            regPasswordPF.setText(regPasswordTF.getText());
+            regPasswordTF.setVisible(false);
+            regPasswordPF.setVisible(true);
+            
+            regPasswordInspectionPF.setText(regPasswordInspectionTF.getText());
+            regPasswordInspectionTF.setVisible(false);
+            regPasswordInspectionPF.setVisible(true);
         }
     }
 //</editor-fold>
@@ -378,6 +395,7 @@ public class FXMLDocumentController implements Initializable {
        
        TitleCol.setCellFactory(TextFieldTableCell.forTableColumn());
        TitleCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("title"));
+       DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
        
        TitleCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<LogEntry, String>>() {
            @Override
@@ -391,7 +409,7 @@ public class FXMLDocumentController implements Initializable {
            
        });
        
-       DateCol.setCellValueFactory(new PropertyValueFactory<LogEntry, String>("date"));
+
        
        Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>> cellFactory =
                new Callback<TableColumn<LogEntry, String>, TableCell<LogEntry, String>>()
@@ -421,6 +439,7 @@ public class FXMLDocumentController implements Initializable {
                                        LogEntry getLogEntry = getTableView().getItems().get( getIndex() );
                                        mainTextArea.setText(getLogEntry.getText());
                                        actualLogEntryTextId = Integer.parseInt(getLogEntry.getLogID());
+                                       System.out.println(getLogEntry.getLogID());
                                        
                                         LogData.clear();
                                         mainListView.getColumns().clear();
@@ -481,6 +500,9 @@ public class FXMLDocumentController implements Initializable {
                                         LogData.addAll(db.getAllLogEntry(actualUserID));
 
                                         mainListView.setItems(LogData); // itt adjuk hozzá az adatokat
+                                        mainTextArea.setText("");
+                                        newLogAddButton.setDisable(false);
+                                        mainTextUpdateButton.setDisable(true);
                                    } );
                                    setGraphic( btn );
                                    setText( null );
@@ -507,8 +529,11 @@ public class FXMLDocumentController implements Initializable {
 //</editor-fold>
     
    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        this.togglevisiblePassword(null);
-    }    
+   public void initialize(URL url, ResourceBundle rb) {
+       this.LogTogglevisiblePassword(null);
+       this.RegTogglevisiblePassword(null);
+   }
+
+  
     
 }
